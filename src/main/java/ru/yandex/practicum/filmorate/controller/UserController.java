@@ -12,7 +12,7 @@ import java.util.HashMap;
 @RequestMapping("/users")
 public class UserController {
 
-    private final HashMap<int, User> users = new HashMap<>();
+    private final HashMap<Integer, User> users = new HashMap<>();
 
     @RequestMapping
 
