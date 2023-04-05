@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,5 +12,5 @@ public class User {
     private String email;
     private String login;
     private String name;
-    private LocalDate birthDay;
+    private LocalDate birthday;
 }
