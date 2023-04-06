@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 public class Film {
 
-    public static final transient LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 1, 28);
+    public static final transient LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
 
     private int id;
     @NotBlank
@@ -20,4 +20,14 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private int duration;
+
+    public Film() {
+    }
+
+    public Film(String name, String description, LocalDate releaseDate, int duration) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 }

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate;
+package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -51,7 +50,21 @@ class UserControllerTest {
     }
 
     @Test
-    void cantCreateUserWithIncorrectLogin() {
+    void cantCreateUserWithEmptyLogin() {
+        Set<ConstraintViolation<User>> errors = validator.validate(userWithIncorrectLogin);
+        Assertions.assertEquals(1, errors.size());
+    }
+
+    @Test
+    void cantCreateUserWithNullLogin() {
+        userWithIncorrectLogin.setLogin(null);
+        Set<ConstraintViolation<User>> errors = validator.validate(userWithIncorrectLogin);
+        Assertions.assertEquals(1, errors.size());
+    }
+
+    @Test
+    void cantCreateUserWithBlankLogin() {
+        userWithIncorrectLogin.setLogin(" ");
         Set<ConstraintViolation<User>> errors = validator.validate(userWithIncorrectLogin);
         Assertions.assertEquals(1, errors.size());
     }
