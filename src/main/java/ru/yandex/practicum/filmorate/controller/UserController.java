@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping()
     public Collection<User> getAllUsers() {
-        log.debug("Текущее количество фильмов: {}", users.size());
+        log.info("Получено текущее количество пользователей: {}", users.size());
         return users.values();
     }
 
@@ -44,7 +44,7 @@ public class UserController {
         if (checkUserIsCorrect(user)) {
             user.setId(id);
             users.put(id++, user);
-            log.debug("Пользователь добавлен: {}", user);
+            log.info("Пользователь добавлен: {}", user);
             return user;
         }
         return null;
@@ -59,7 +59,7 @@ public class UserController {
                 throw new ResponseStatusException(NOT_FOUND, "Пользователь не найден");
             }
             users.put(userId, user);
-            log.debug("Пользователь обновлен: {}", user);
+            log.info("Пользователь обновлен: {}", user);
             return user;
         }
         return null;

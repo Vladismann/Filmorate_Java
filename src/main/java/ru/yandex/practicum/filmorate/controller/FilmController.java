@@ -30,7 +30,7 @@ public class FilmController {
 
     @GetMapping()
     public Collection<Film> getAllFilms() {
-        log.debug("Текущее количество фильмов: {}", films.size());
+        log.info("Получено количество фильмов: {}", films.size());
         return films.values();
     }
 
@@ -39,7 +39,7 @@ public class FilmController {
         if (checkFilmIsCorrect(film)) {
             film.setId(id);
             films.put(id++, film);
-            log.debug("Фильм добавлен: {}", film);
+            log.info("Фильм добавлен: {}", film);
             return film;
         }
         return null;
@@ -54,7 +54,7 @@ public class FilmController {
                 throw new ResponseStatusException(NOT_FOUND, "Фильм не найден");
             }
             films.put(filmId, film);
-            log.debug("Фильм обновлен: {}", film);
+            log.info("Фильм обновлен: {}", film);
             return film;
         }
         return null;
