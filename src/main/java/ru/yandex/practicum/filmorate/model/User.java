@@ -12,11 +12,21 @@ public class User {
 
     private int id;
     @NotBlank
-    @Email
-    private String email;
-    @NotBlank
     private String login;
     private String name;
+    @NotBlank
+    @Email
+    private String email;
     @Past
     private LocalDate birthday;
+
+    public User() {
+    }
+
+    public User(String login, String name, String email, LocalDate birthday) {
+        this.login = login;
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
+    }
 }

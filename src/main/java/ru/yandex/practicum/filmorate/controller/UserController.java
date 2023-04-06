@@ -24,7 +24,7 @@ public class UserController {
     private boolean checkUserIsCorrect(User user) throws ValidationException {
         if (user.getLogin().contains(" ")) {
             log.debug("Отправлен логин с пробелом: {}", user.getLogin());
-            throw new ValidationException(user.getLogin() + " логин не должен содержать пробел");
+            throw new ValidationException("Логин не должен содержать пробел");
         }
         if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
             user.setName(user.getLogin());
