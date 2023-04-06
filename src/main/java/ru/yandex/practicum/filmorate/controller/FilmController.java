@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -23,6 +22,7 @@ public class FilmController {
 
     private boolean checkFilmIsCorrect(Film films) throws ValidationException {
         if (films.getReleaseDate().isBefore(CINEMA_BIRTHDAY)) {
+            log.debug("Отправлен некорректная дата фильма: {}", films.getReleaseDate());
             throw new ValidationException(films.getReleaseDate() + " указанная дата раньше первого фильма в истории кино");
         }
         return true;
@@ -30,6 +30,7 @@ public class FilmController {
 
     @GetMapping()
     public Collection<Film> getAllFilms() {
+        log.debug("Текущее количество фильмов: {}", films.size());
         return films.values();
     }
 
@@ -38,6 +39,7 @@ public class FilmController {
         if (checkFilmIsCorrect(film)) {
             film.setId(id);
             films.put(id++, film);
+            log.debug("Фильм добавлен: {}", film);
             return film;
         }
         return null;
@@ -48,9 +50,11 @@ public class FilmController {
         int filmId = film.getId();
         if (filmId != 0 && checkFilmIsCorrect(film)) {
             if (!films.containsKey(filmId)) {
+                log.debug("Отправлен некорректный id фильма: {}", filmId);
                 throw new ResponseStatusException(NOT_FOUND, "Фильм не найден");
             }
             films.put(filmId, film);
+            log.debug("Фильм обновлен: {}", film);
             return film;
         }
         return null;

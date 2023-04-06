@@ -23,16 +23,19 @@ public class UserController {
 
     private boolean checkUserIsCorrect(User user) throws ValidationException {
         if (user.getLogin().contains(" ")) {
+            log.debug("Отправлен логин с пробелом: {}", user.getLogin());
             throw new ValidationException(user.getLogin() + " логин не должен содержать пробел");
         }
         if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
             user.setName(user.getLogin());
+            log.info("Пустое имя заменено на логин пользователя: {}", user.getName());
         }
         return true;
     }
 
     @GetMapping()
     public Collection<User> getAllUsers() {
+        log.debug("Текущее количество фильмов: {}", users.size());
         return users.values();
     }
 
@@ -41,6 +44,7 @@ public class UserController {
         if (checkUserIsCorrect(user)) {
             user.setId(id);
             users.put(id++, user);
+            log.debug("Пользователь добавлен: {}", user);
             return user;
         }
         return null;
@@ -51,9 +55,11 @@ public class UserController {
         int userId = user.getId();
         if (userId != 0 && checkUserIsCorrect(user)) {
             if (!users.containsKey(userId)) {
+                log.debug("Отправлен некорректный id пользователя: {}", userId);
                 throw new ResponseStatusException(NOT_FOUND, "Пользователь не найден");
             }
             users.put(userId, user);
+            log.debug("Пользователь обновлен: {}", user);
             return user;
         }
         return null;
