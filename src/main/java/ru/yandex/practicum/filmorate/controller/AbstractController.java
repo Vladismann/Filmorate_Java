@@ -45,10 +45,10 @@ public abstract class AbstractController<T extends Resource> {
         int resourceId = resource.getId();
         if (!storage.containsKey(resourceId) || resourceId == 0) {
             if (resource instanceof Film) {
-                log.info(USER_NOT_FOUND, resourceId);
+                log.info(FILM_NOT_FOUND, resourceId);
                 throw new ResponseStatusException(NOT_FOUND, FILM_NOT_FOUND_EX);
             } else {
-                log.info(FILM_NOT_FOUND, resourceId);
+                log.info(USER_NOT_FOUND, resourceId);
                 throw new ResponseStatusException(NOT_FOUND, USER_NOT_FOUND_EX);
             }
         }
