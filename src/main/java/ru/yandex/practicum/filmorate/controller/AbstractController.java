@@ -53,7 +53,11 @@ public abstract class AbstractController<T extends Resource> {
             }
         }
         storage.put(resourceId, resource);
-        log.info(UPDATED_USER, resource);
+        if (resource instanceof Film) {
+            log.info(UPDATED_FILM, resource);
+        } else {
+            log.info(UPDATED_USER, resource);
+        }
         return resource;
     }
 
