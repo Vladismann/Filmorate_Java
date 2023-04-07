@@ -16,7 +16,7 @@ import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.*;
 @Slf4j
 public abstract class AbstractController<T extends Resource> {
 
-    Map<Integer, T> storage = new HashMap<>();
+    protected Map<Integer, T> storage = new HashMap<>();
     private int id = 1;
 
     protected abstract void validateResource(T resource);
