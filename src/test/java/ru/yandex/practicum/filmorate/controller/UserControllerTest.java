@@ -72,27 +72,27 @@ class UserControllerTest {
     @Test
     void cantCreateUserWithLoginWithWhiteSpace() {
         userWithIncorrectLogin.setLogin("Te St");
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.createUser(userWithIncorrectLogin));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.create(userWithIncorrectLogin));
         Assertions.assertEquals("Логин не должен содержать пробел", exception.getMessage());
     }
 
     @Test
     void emptyUserNameReplacingByUserLogin() throws ValidationException {
-        controller.createUser(userWithIncorrectEmptyName);
+        controller.create(userWithIncorrectEmptyName);
         Assertions.assertEquals("testReplaceNameByLogin", userWithIncorrectEmptyName.getName());
     }
 
     @Test
     void nullUserNameReplacingByUserLogin() throws ValidationException {
         userWithIncorrectEmptyName.setName(null);
-        controller.createUser(userWithIncorrectEmptyName);
+        controller.create(userWithIncorrectEmptyName);
         Assertions.assertEquals("testReplaceNameByLogin", userWithIncorrectEmptyName.getName());
     }
 
     @Test
     void blankUserNameReplacingByUserLogin() throws ValidationException {
         userWithIncorrectEmptyName.setName(" ");
-        controller.createUser(userWithIncorrectEmptyName);
+        controller.create(userWithIncorrectEmptyName);
         Assertions.assertEquals("testReplaceNameByLogin", userWithIncorrectEmptyName.getName());
     }
 

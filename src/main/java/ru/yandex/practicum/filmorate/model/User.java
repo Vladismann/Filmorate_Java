@@ -8,7 +8,7 @@ import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 @Data
-public class User {
+public class User implements Resource {
 
     private int id;
     @NotBlank

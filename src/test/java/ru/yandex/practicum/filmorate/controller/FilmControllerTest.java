@@ -103,20 +103,20 @@ class FilmControllerTest {
 
     @Test
     void cantCreateFilmBeforeCinemaBirthDate() {
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.addFilm(filmWithIncorrectRealiseDate));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.create(filmWithIncorrectRealiseDate));
         Assertions.assertEquals((filmWithIncorrectRealiseDate.getReleaseDate() + " указанная дата раньше первого фильма в истории кино"), exception.getMessage());
     }
 
     @Test
     void successCreateFilmEqualCinemaBirthDate() {
         filmWithIncorrectRealiseDate.setReleaseDate(CINEMA_BIRTHDAY);
-        assertDoesNotThrow(() -> controller.addFilm(filmWithIncorrectRealiseDate));
+        assertDoesNotThrow(() -> controller.create(filmWithIncorrectRealiseDate));
     }
 
     @Test
     void successCreateFilmAfterCinemaBirthDate() {
         filmWithIncorrectRealiseDate.setReleaseDate(dateBeforeCinemaBirthDate.plusDays(random.nextInt((int) daysFromCinemaBirthToTodayDate)));
-        assertDoesNotThrow(() -> controller.addFilm(filmWithIncorrectRealiseDate));
+        assertDoesNotThrow(() -> controller.create(filmWithIncorrectRealiseDate));
     }
 
     @Test
