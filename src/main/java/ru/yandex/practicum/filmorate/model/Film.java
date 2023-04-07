@@ -10,8 +10,6 @@ import java.time.LocalDate;
 @Data
 public class Film {
 
-    public static final transient LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
-
     private int id;
     @NotBlank
     private String name;

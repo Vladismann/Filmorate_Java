@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static ru.yandex.practicum.filmorate.model.TechnicalMessages.*;
 
 @Slf4j
 @RestController
@@ -21,47 +22,44 @@ public class UserController {
     private final HashMap<Integer, User> users = new HashMap<>();
     private int id = 1;
 
-    private boolean checkUserIsCorrect(User user) throws ValidationException {
+    private void checkUserIsCorrect(User user) {
         if (user.getLogin().contains(" ")) {
-            log.debug("Отправлен логин с пробелом: {}", user.getLogin());
-            throw new ValidationException("Логин не должен содержать пробел");
+            log.info(LOGIN_WITH_WHITESPACE, user.getLogin());
+            throw new ValidationException(LOGIN_WITH_WHITESPACE_EX);
         }
-        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
-            log.info("Пустое имя заменено на логин пользователя: {}", user.getName());
+            log.info(USER_HAS_EMPTY_NAME, user.getName());
         }
-        return true;
     }
 
     @GetMapping()
     public Collection<User> getAllUsers() {
-        log.info("Получено текущее количество пользователей: {}", users.size());
+        log.info(RECEIVED_USERS, users.size());
         return users.values();
     }
 
     @PostMapping()
-    public User createUser(@Valid @RequestBody User user) throws ValidationException {
-        if (checkUserIsCorrect(user)) {
-            user.setId(id);
-            users.put(id++, user);
-            log.info("Пользователь добавлен: {}", user);
-            return user;
-        }
-        return null;
+    public User createUser(@Valid @RequestBody User user) {
+        checkUserIsCorrect(user);
+        user.setId(id);
+        users.put(id++, user);
+        log.info(ADDED_USER, user);
+        return user;
+
     }
 
     @PutMapping()
-    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) {
+        checkUserIsCorrect(user);
         int userId = user.getId();
-        if (userId != 0 && checkUserIsCorrect(user)) {
-            if (!users.containsKey(userId)) {
-                log.debug("Отправлен некорректный id пользователя: {}", userId);
-                throw new ResponseStatusException(NOT_FOUND, "Пользователь не найден");
-            }
-            users.put(userId, user);
-            log.info("Пользователь обновлен: {}", user);
-            return user;
+        if (!users.containsKey(userId) || userId == 0) {
+            log.info(USER_NOT_FOUND, userId);
+            throw new ResponseStatusException(NOT_FOUND, USER_NOT_FOUND_EX);
         }
-        return null;
+        users.put(userId, user);
+        log.info(UPDATED_USER, user);
+        return user;
     }
+
 }

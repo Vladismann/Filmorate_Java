@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static ru.yandex.practicum.filmorate.model.Film.CINEMA_BIRTHDAY;
+import static ru.yandex.practicum.filmorate.controller.FilmController.CINEMA_BIRTHDAY;
 
 
 class FilmControllerTest {
@@ -31,7 +31,7 @@ class FilmControllerTest {
     private Film filmWithIncorrectDuration;
     private static final int INCORRECT_DESCRIPTION_SIZE = 201;
     private final Random random = new Random();
-    private final int over201 = random.nextInt(100) + INCORRECT_DESCRIPTION_SIZE;
+    private final int over201 = random.nextInt(101) + INCORRECT_DESCRIPTION_SIZE;
     private final int less200 = random.nextInt(200);
     private final long daysFromCinemaBirthToTodayDate = ChronoUnit.DAYS.between(CINEMA_BIRTHDAY, LocalDate.now());
 
