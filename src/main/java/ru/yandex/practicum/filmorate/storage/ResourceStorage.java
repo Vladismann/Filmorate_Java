@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.controller;
+package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,9 +10,10 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.UPDATED_RESOURCE;
 
 @Slf4j
-public abstract class AbstractController<T extends Resource> {
+public abstract class ResourceStorage<T extends Resource> {
 
     protected final Map<Integer, T> storage = new HashMap<>();
     private int id = 1;
@@ -43,5 +44,4 @@ public abstract class AbstractController<T extends Resource> {
         log.info(UPDATED_RESOURCE, resource);
         return resource;
     }
-
 }

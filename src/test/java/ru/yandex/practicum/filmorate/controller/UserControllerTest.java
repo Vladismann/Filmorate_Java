@@ -3,15 +3,14 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.User;
-
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -28,8 +27,9 @@ class UserControllerTest {
     @BeforeEach
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        InMemoryUserStorage userStorage = new InMemoryUserStorage();
         validator = factory.getValidator();
-        controller = new UserController();
+        controller = new UserController(userStorage);
         userWithIncorrectEmail = new User("test", "test name", "testmail@", TEST_DATE);
         userWithIncorrectLogin = new User("", "test name", "test@mail.ru", TEST_DATE);
         userWithIncorrectEmptyName = new User("testReplaceNameByLogin", "", "test@mail.ru", TEST_DATE);
