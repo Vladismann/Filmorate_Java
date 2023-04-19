@@ -42,4 +42,8 @@ public abstract class ResourceStorage<T extends Resource> {
         log.info(UPDATED_RESOURCE, resource);
         return resource;
     }
+
+    public Map<Integer, T> getStorage() {
+        return storage;
+    }
 }
