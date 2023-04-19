@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import javax.validation.Valid;
 import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
 
 @Component
@@ -26,7 +26,7 @@ public class InMemoryUserStorage extends ResourceStorage<User> {
     public void validateResource(User user) {
         if (user.getLogin().contains(" ")) {
             log.info(LOGIN_WITH_WHITESPACE, user.getLogin());
-            throw new ValidationException(LOGIN_WITH_WHITESPACE_EX);
+            throw new ValidationException(LOGIN_WITH_WHITESPACE_EX + user.getLogin());
         }
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());

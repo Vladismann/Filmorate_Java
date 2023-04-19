@@ -11,13 +11,13 @@ import java.time.LocalDate;
 public class User implements Resource {
 
     private int id;
-    @NotBlank
+    @NotBlank(message = "Логин не должен быть пустым")
     private String login;
     private String name;
-    @NotBlank
-    @Email
+    @NotBlank(message = "Почта не должна быть пустой")
+    @Email(message = "Некорректный формат почты")
     private String email;
-    @PastOrPresent
+    @PastOrPresent(message = "Дата не должна быть в будущем")
     private LocalDate birthday;
 
     public User() {

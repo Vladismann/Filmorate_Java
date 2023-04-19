@@ -1,16 +1,14 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.server.ResponseStatusException;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Resource;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.*;
-import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.UPDATED_RESOURCE;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Slf4j
 public abstract class ResourceStorage<T extends Resource> {
@@ -38,7 +36,7 @@ public abstract class ResourceStorage<T extends Resource> {
         int resourceId = resource.getId();
         if (!storage.containsKey(resourceId) || resourceId == 0) {
             log.info(RESOURCE_NOT_FOUND, resource);
-            throw new ResponseStatusException(NOT_FOUND, RESOURCE_NOT_FOUND_EX);
+            throw new NotFoundException(RESOURCE_NOT_FOUND_EX + resourceId);
         }
         storage.put(resourceId, resource);
         log.info(UPDATED_RESOURCE, resource);

@@ -1,10 +1,10 @@
-package ru.yandex.practicum.filmorate.Messages;
+package ru.yandex.practicum.filmorate.messages;
 
 public final class TechnicalMessages {
 
     //common
     public static final String RESOURCE_NOT_FOUND = "Отправлен некорректный id ресусрса: {}";
-    public static final String RESOURCE_NOT_FOUND_EX = "Ресурс не найден: ";
+    public static final String RESOURCE_NOT_FOUND_EX = "Ресурс не существует: ";
     public static final String ADDED_RESOURCE = "Ресурс добавлен: {}";
     public static final String UPDATED_RESOURCE = "Ресурс обновлен: {}";
     public static final String RECEIVED_GET = "Получен запрос GET ";
@@ -17,7 +17,7 @@ public final class TechnicalMessages {
 
     //users
     public static final String LOGIN_WITH_WHITESPACE = "Отправлен логин с пробелом: {}";
-    public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел";
+    public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел: ";
     public static final String USER_HAS_EMPTY_NAME = "Пустое имя заменено на логин пользователя: {}";
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
 

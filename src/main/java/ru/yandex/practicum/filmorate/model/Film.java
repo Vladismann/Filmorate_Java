@@ -11,12 +11,12 @@ import java.time.LocalDate;
 public class Film implements Resource {
 
     private int id;
-    @NotBlank
+    @NotBlank(message = "Имя не может быть пустым")
     private String name;
-    @Size(max = 200)
+    @Size(max = 200, message = "Описание превышает 200 символов")
     private String description;
     private LocalDate releaseDate;
-    @Positive
+    @Positive(message = "Значение не должно быть отрицательным")
     private int duration;
 
     public Film() {

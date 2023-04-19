@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.Messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
 
 @Slf4j
