@@ -13,6 +13,8 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 @Slf4j
 public abstract class ResourceStorage<T extends Resource> {
 
+    //Вместо интерфейсов решил использовать абстрактный класс
+    //Сервисы используют типизацию от InMemoryStorages
     protected final Map<Integer, T> storage = new HashMap<>();
     private int id = 1;
 

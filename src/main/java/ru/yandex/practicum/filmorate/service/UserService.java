@@ -14,12 +14,13 @@ import java.util.stream.Collectors;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.FRIEND_NOT_FOUND_EX;
 
 @Service
-public class UserService {
+public class UserService<T extends InMemoryUserStorage> {
 
-    private final InMemoryUserStorage userStorage;
+    //В будущем для расширения наследование от Storages будет удобнее, чем от интерфейсов
+    private final T userStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage userStorage) {
+    public UserService(T userStorage) {
         this.userStorage = userStorage;
     }
 

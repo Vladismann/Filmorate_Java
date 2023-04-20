@@ -19,12 +19,12 @@ import static ru.yandex.practicum.filmorate.controller.Paths.*;
 public class UserController {
 
     private final InMemoryUserStorage userStorage;
-    private final UserService userService;
+    private final UserService<InMemoryUserStorage> userService;
 
     @Autowired
     public UserController(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
-        userService = new UserService(userStorage);
+        userService = new UserService<>(userStorage);
     }
 
     @GetMapping()
