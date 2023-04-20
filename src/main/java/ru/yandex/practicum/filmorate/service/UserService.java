@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.Set;
 
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RESOURCE_NOT_FOUND_EX;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 public class UserService {
@@ -20,19 +20,24 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    private void isUsersExists(int currentUserId, int friendId) {
-        if (!userStorage.getStorage().containsKey(currentUserId)) {
-            throw new NotFoundException(RESOURCE_NOT_FOUND_EX + currentUserId);
-        }
-        if (!userStorage.getStorage().containsKey(friendId)) {
-            throw new NotFoundException(RESOURCE_NOT_FOUND_EX + friendId);
-        }
-    }
-
     public Set<Integer> addFriend(int currentUserId, int friendId) {
-        isUsersExists(currentUserId, friendId);
+        userStorage.isResourceExist(currentUserId);
+        userStorage.isResourceExist(friendId);
         User user = userStorage.getStorage().get(currentUserId);
         user.getFriends().add(friendId);
         return user.getFriends();
     }
+
+    public Set<Integer> deleteFriend(int currentUserId, int friendId) {
+        userStorage.isResourceExist(currentUserId);
+        User user = userStorage.getStorage().get(currentUserId);
+        if (!user.getFriends().contains(friendId)) {
+            throw new NotFoundException(FRIEND_NOT_FOUND_EX + friendId);
+        }
+        user.getFriends().remove(friendId);
+        return user.getFriends();
+    }
+
+
+
 }

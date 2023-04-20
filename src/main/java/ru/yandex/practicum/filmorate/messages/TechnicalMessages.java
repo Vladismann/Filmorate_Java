@@ -20,5 +20,6 @@ public final class TechnicalMessages {
     public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел: ";
     public static final String USER_HAS_EMPTY_NAME = "Пустое имя заменено на логин пользователя: {}";
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
+    public static final String FRIEND_NOT_FOUND_EX = "Друг не найден: ";
 
 }

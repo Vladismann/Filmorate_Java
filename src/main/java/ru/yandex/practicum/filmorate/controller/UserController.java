@@ -47,11 +47,19 @@ public class UserController {
         return userStorage.update(user);
     }
 
-    @PutMapping(ADD_FRIEND)
+    @PutMapping(UPDATE_FRIEND_PATH)
     public Set<Integer> addFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
         return userService.addFriend(id, friendId);
     }
+
+    @DeleteMapping(UPDATE_FRIEND_PATH)
+    public Set<Integer> deleteFriend(
+            @PathVariable(value = "id") int id,
+            @PathVariable(value = "friendId") int friendId) {
+        return userService.deleteFriend(id, friendId);
+    }
+
 
 }
