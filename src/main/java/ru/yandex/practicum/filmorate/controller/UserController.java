@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Set;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.*;
 
 @Slf4j
 @RestController
@@ -32,6 +32,11 @@ public class UserController {
         return userStorage.getAll();
     }
 
+    @GetMapping(GET_BY_ID)
+    public User getById(@PathVariable(value = "id") int id) {
+        return userStorage.getById(id);
+    }
+
     @PostMapping()
     public User create(@Valid @RequestBody User user) {
         return userStorage.create(user);
@@ -42,7 +47,7 @@ public class UserController {
         return userStorage.update(user);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
+    @PutMapping(ADD_FRIEND)
     public Set<Integer> addFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {

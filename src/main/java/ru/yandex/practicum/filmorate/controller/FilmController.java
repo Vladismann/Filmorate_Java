@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID;
 
 @Slf4j
 @RestController
@@ -26,6 +27,11 @@ public class FilmController {
     @GetMapping()
     public Collection<Film> getAll() {
         return filmStorage.getAll();
+    }
+
+    @GetMapping(GET_BY_ID)
+    public Film getById(@PathVariable(value = "id") int id) {
+        return filmStorage.getById(id);
     }
 
     @PostMapping()

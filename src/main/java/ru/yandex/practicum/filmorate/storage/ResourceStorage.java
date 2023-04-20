@@ -18,9 +18,20 @@ public abstract class ResourceStorage<T extends Resource> {
 
     protected abstract void validateResource(T resource);
 
+    public void isResourceExist(int id) {
+        if (!storage.containsKey(id) || id == 0) {
+            log.info(RESOURCE_NOT_FOUND, id);
+            throw new NotFoundException(RESOURCE_NOT_FOUND_EX + id);
+        }
+    }
 
     public Collection<T> getAll() {
         return storage.values();
+    }
+
+    public T getById(int id) {
+        isResourceExist(id);
+        return storage.get(id);
     }
 
     public T create(T resource) {
@@ -34,10 +45,7 @@ public abstract class ResourceStorage<T extends Resource> {
     public T update(T resource) {
         validateResource(resource);
         int resourceId = resource.getId();
-        if (!storage.containsKey(resourceId) || resourceId == 0) {
-            log.info(RESOURCE_NOT_FOUND, resource);
-            throw new NotFoundException(RESOURCE_NOT_FOUND_EX + resourceId);
-        }
+        isResourceExist(resourceId);
         storage.put(resourceId, resource);
         log.info(UPDATED_RESOURCE, resource);
         return resource;
