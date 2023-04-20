@@ -62,8 +62,15 @@ public class UserController {
     }
 
     @GetMapping(GET_USER_FRIENDS)
-    public Collection<User> deleteFriend(@PathVariable(value = "id") int id) {
+    public Collection<User> getUserFriends(@PathVariable(value = "id") int id) {
         return userService.getUserFriends(id);
+    }
+
+    @GetMapping(GET_COMMON_FRIENDS)
+    public Collection<User> getCommonFriends(
+            @PathVariable(value = "id") int id,
+            @PathVariable(value = "otherId") int otherId) {
+        return userService.findCommonFriends(id, otherId);
     }
 
 }

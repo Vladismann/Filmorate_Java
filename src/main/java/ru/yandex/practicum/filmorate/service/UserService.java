@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.FRIEND_NOT_FOUND_EX;
 
@@ -53,6 +54,19 @@ public class UserService {
         User user = userStorage.getStorage().get(currentUserId);
         for (int friendId : user.getFriends()) {
             friends.add(userStorage.getStorage().get(friendId));
+        }
+        return friends;
+    }
+
+    public List<User> findCommonFriends(int currentUserId, int friendId) {
+        userStorage.isResourceExist(currentUserId);
+        userStorage.isResourceExist(friendId);
+        List<User> friends = new ArrayList<>();
+        Set<Integer> friendsList1 = userStorage.getStorage().get(currentUserId).getFriends();
+        Set<Integer> friendsList2 = userStorage.getStorage().get(friendId).getFriends();
+        Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
+        for (int id : commonFriends) {
+            friends.add(userStorage.getStorage().get(id));
         }
         return friends;
     }
