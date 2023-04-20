@@ -61,5 +61,9 @@ public class UserController {
         return userService.deleteFriend(id, friendId);
     }
 
+    @GetMapping(GET_USER_FRIENDS)
+    public Collection<User> deleteFriend(@PathVariable(value = "id") int id) {
+        return userService.getUserFriends(id);
+    }
 
 }
