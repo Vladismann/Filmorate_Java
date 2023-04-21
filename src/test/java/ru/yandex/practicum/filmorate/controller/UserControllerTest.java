@@ -73,7 +73,7 @@ class UserControllerTest {
     void cantCreateUserWithLoginWithWhiteSpace() {
         userWithIncorrectLogin.setLogin("Te St");
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.create(userWithIncorrectLogin));
-        Assertions.assertEquals("Логин не должен содержать пробел", exception.getMessage());
+        Assertions.assertEquals("Логин не должен содержать пробел: " + userWithIncorrectLogin.getLogin(), exception.getMessage());
     }
 
     @Test
