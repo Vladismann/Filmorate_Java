@@ -4,7 +4,7 @@ public final class TechnicalMessages {
 
     //common
     public static final String RESOURCE_NOT_FOUND = "Отправлен некорректный id ресусрса: {}";
-    public static final String RESOURCE_NOT_FOUND_EX = "Ресурс не существует: ";
+    public static final String RESOURCE_NOT_FOUND_EX = "Ресурс не существует. Id: ";
     public static final String ADDED_RESOURCE = "Ресурс добавлен: {}";
     public static final String UPDATED_RESOURCE = "Ресурс обновлен: {}";
     public static final String RECEIVED_GET = "Получен запрос GET ";

@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.*;
@@ -49,10 +50,21 @@ public class FilmController {
     }
 
     @PutMapping(UPDATE_LIKE_PATH)
-    public Set<Integer> update(
+    public Set<Integer> addLike(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "userId") int userId) {
         return filmService.addLike(id, userId);
     }
 
+    @DeleteMapping(UPDATE_LIKE_PATH)
+    public Set<Integer> deleteLike(
+            @PathVariable(value = "id") int id,
+            @PathVariable(value = "userId") int userId) {
+        return filmService.deleteLike(id, userId);
+    }
+
+    @GetMapping(GET_POPULAR_FILMS)
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10", required = false) int count) {
+        return filmService.getPopularFilms(count);
+    }
 }

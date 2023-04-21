@@ -8,5 +8,6 @@ public final class Paths {
     public static final String GET_USER_FRIENDS = "{id}/friends";
     public static final String GET_COMMON_FRIENDS = "{id}/friends/common/{otherId}";
     public static final String UPDATE_LIKE_PATH = "/{id}/like/{userId}";
+    public static final String GET_POPULAR_FILMS = "/popular";
 
 }
