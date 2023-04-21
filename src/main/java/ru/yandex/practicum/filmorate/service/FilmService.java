@@ -37,12 +37,12 @@ public class FilmService<T extends InMemoryFilmStorage, U extends InMemoryUserSt
     }
 
     public List<Film> getPopularFilms(int count) {
-        return filmStorage.getStorage().
-                values()
-                .stream().
-                sorted(this::compare).
-                limit(count).
-                collect(Collectors.toList());
+        return filmStorage.getStorage()
+                .values()
+                .stream()
+                .sorted(this::compare)
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
 }
