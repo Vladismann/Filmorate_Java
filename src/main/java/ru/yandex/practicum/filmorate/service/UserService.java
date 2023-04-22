@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -13,24 +14,24 @@ import java.util.stream.Collectors;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.FRIEND_NOT_FOUND_EX;
 
 @Service
+@Slf4j
 public class UserService<T extends InMemoryUserStorage> {
 
-    //В будущем для расширения наследование от Storages будет удобнее, чем от интерфейсов
     private final T userStorage;
 
     public UserService(T userStorage) {
         this.userStorage = userStorage;
     }
 
-    public Set<Integer> addFriend(int currentUserId, int friendId) {
+    public void addFriend(int currentUserId, int friendId) {
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         user.getFriends().add(friendId);
         friend.getFriends().add(currentUserId);
-        return user.getFriends();
+        log.info("Пользователю с id: " + currentUserId + " добавлен друг с id: " + friendId);
     }
 
-    public Set<Integer> deleteFriend(int currentUserId, int friendId) {
+    public void deleteFriend(int currentUserId, int friendId) {
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         if (!user.getFriends().contains(friendId)) {
@@ -40,15 +41,14 @@ public class UserService<T extends InMemoryUserStorage> {
         if (friend.getFriends().contains(friendId)) {
             friend.getFriends().remove(currentUserId);
         }
-        return user.getFriends();
+        log.info("Пользователь с id: " + currentUserId + " удалил друга с id: " + friendId);
     }
 
     public List<User> getUserFriends(int currentUserId) {
         User user = userStorage.getById(currentUserId);
         List<User> friends = new ArrayList<>();
-        for (int friendId : user.getFriends()) {
-            friends.add(userStorage.getById(friendId));
-        }
+        user.getFriends().forEach(friendId -> friends.add(userStorage.getById(friendId)));
+        log.info("Запрос списка друзей пользователя с id: " + currentUserId);
         return friends;
     }
 
@@ -57,9 +57,8 @@ public class UserService<T extends InMemoryUserStorage> {
         Set<Integer> friendsList2 = userStorage.getById(friendId).getFriends();
         Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
         List<User> friends = new ArrayList<>();
-        for (int id : commonFriends) {
-            friends.add(userStorage.getById(id));
-        }
+        commonFriends.forEach(id -> friends.add(userStorage.getById(id)));
+        log.info("Запрос общих друзей пользователя с id: " + currentUserId + " и id: " + friendId);
         return friends;
     }
 

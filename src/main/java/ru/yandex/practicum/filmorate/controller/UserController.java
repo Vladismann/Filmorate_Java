@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Set;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.*;
 
@@ -48,17 +47,17 @@ public class UserController {
     }
 
     @PutMapping(UPDATE_FRIEND_PATH)
-    public Set<Integer> addFriend(
+    public void addFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
-        return userService.addFriend(id, friendId);
+        userService.addFriend(id, friendId);
     }
 
     @DeleteMapping(UPDATE_FRIEND_PATH)
-    public Set<Integer> deleteFriend(
+    public void deleteFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
-        return userService.deleteFriend(id, friendId);
+        userService.deleteFriend(id, friendId);
     }
 
     @GetMapping(GET_USER_FRIENDS)

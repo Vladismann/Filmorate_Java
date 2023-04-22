@@ -5,17 +5,15 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDate;
 import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.service.FilmService.CINEMA_BIRTHDAY;
 
 @Slf4j
 @Component
 public class InMemoryFilmStorage extends ResourceStorage<Film> {
-
-    public static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
 
     @Override
     protected void validateResource(Film film) {

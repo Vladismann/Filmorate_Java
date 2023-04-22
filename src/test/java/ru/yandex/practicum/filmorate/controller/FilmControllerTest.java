@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage.CINEMA_BIRTHDAY;
+import static ru.yandex.practicum.filmorate.service.FilmService.CINEMA_BIRTHDAY;
 
 
 class FilmControllerTest {
