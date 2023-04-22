@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -17,33 +16,31 @@ import static ru.yandex.practicum.filmorate.controller.Paths.*;
 @RequestMapping(USERS_PATH)
 public class UserController {
 
-    private final InMemoryUserStorage userStorage;
-    private final UserService<InMemoryUserStorage> userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(InMemoryUserStorage userStorage) {
-        this.userStorage = userStorage;
-        userService = new UserService<>(userStorage);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping()
     public Collection<User> getAll() {
-        return userStorage.getAll();
+        return userService.getAllUsers();
     }
 
     @GetMapping(GET_BY_ID)
     public User getById(@PathVariable(value = "id") int id) {
-        return userStorage.getById(id);
+        return userService.getUserById(id);
     }
 
     @PostMapping()
     public User create(@Valid @RequestBody User user) {
-        return userStorage.create(user);
+        return userService.createUser(user);
     }
 
     @PutMapping()
     public User update(@Valid @RequestBody User user) {
-        return userStorage.update(user);
+        return userService.updateUser(user);
     }
 
     @PutMapping(UPDATE_FRIEND_PATH)

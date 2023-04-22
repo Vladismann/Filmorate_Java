@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
@@ -27,9 +28,10 @@ class UserControllerTest {
     @BeforeEach
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        InMemoryUserStorage userStorage = new InMemoryUserStorage();
+        InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
+        UserService userService = new UserService(inMemoryUserStorage);
         validator = factory.getValidator();
-        controller = new UserController(userStorage);
+        controller = new UserController(userService);
         userWithIncorrectEmail = new User("test", "test name", "testmail@", TEST_DATE);
         userWithIncorrectLogin = new User("", "test name", "test@mail.ru", TEST_DATE);
         userWithIncorrectEmptyName = new User("testReplaceNameByLogin", "", "test@mail.ru", TEST_DATE);

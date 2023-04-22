@@ -19,33 +19,31 @@ import static ru.yandex.practicum.filmorate.controller.Paths.*;
 @RequestMapping(FILMS_PATH)
 public class FilmController {
 
-    private final InMemoryFilmStorage filmStorage;
-    private final FilmService<InMemoryFilmStorage, InMemoryUserStorage> filmService;
+    private final FilmService filmService;
 
     @Autowired
     public FilmController(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.filmService = new FilmService<>(filmStorage, userStorage);
+        this.filmService = new FilmService(filmStorage, userStorage);
     }
 
     @GetMapping()
     public Collection<Film> getAll() {
-        return filmStorage.getAll();
+        return filmService.getAll();
     }
 
     @GetMapping(GET_BY_ID)
     public Film getById(@PathVariable(value = "id") int id) {
-        return filmStorage.getById(id);
+        return filmService.getFilmById(id);
     }
 
     @PostMapping()
     public Film create(@Valid @RequestBody Film film) {
-        return filmStorage.create(film);
+        return filmService.createFilm(film);
     }
 
     @PutMapping()
     public Film update(@Valid @RequestBody Film film) {
-        return filmStorage.update(film);
+        return filmService.updateFilm(film);
     }
 
     @PutMapping(UPDATE_LIKE_PATH)

@@ -1,26 +1,60 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.FRIEND_NOT_FOUND_EX;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 @Slf4j
-public class UserService<T extends InMemoryUserStorage> {
+public class UserService {
 
-    private final T userStorage;
+    private final InMemoryUserStorage userStorage;
+    private int id = 1;
 
-    public UserService(T userStorage) {
+    @Autowired
+    public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;
+    }
+
+    public void validateUser(User user) {
+        if (user.getLogin().contains(" ")) {
+            log.info(LOGIN_WITH_WHITESPACE, user.getLogin());
+            throw new ValidationException(LOGIN_WITH_WHITESPACE_EX + user.getLogin());
+        }
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+            log.info(USER_HAS_EMPTY_NAME, user.getName());
+        }
+    }
+
+    public User createUser(User user) {
+        validateUser(user);
+        return userStorage.create(id++, user);
+    }
+
+    public User updateUser(User user) {
+        validateUser(user);
+        return userStorage.update(user);
+    }
+
+    public Collection<User> getAllUsers() {
+        return userStorage.getAll();
+    }
+
+    public User getUserById(int id) {
+        return userStorage.getById(id);
     }
 
     public void addFriend(int currentUserId, int friendId) {
