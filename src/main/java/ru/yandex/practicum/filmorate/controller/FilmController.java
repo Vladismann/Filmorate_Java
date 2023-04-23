@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -22,8 +20,8 @@ public class FilmController {
     private final FilmService filmService;
 
     @Autowired
-    public FilmController(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
-        this.filmService = new FilmService(filmStorage, userStorage);
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @GetMapping()
@@ -31,7 +29,7 @@ public class FilmController {
         return filmService.getAll();
     }
 
-    @GetMapping(GET_BY_ID)
+    @GetMapping(GET_BY_ID_PATH)
     public Film getById(@PathVariable(value = "id") int id) {
         return filmService.getFilmById(id);
     }
@@ -60,7 +58,7 @@ public class FilmController {
         filmService.deleteLike(id, userId);
     }
 
-    @GetMapping(GET_POPULAR_FILMS)
+    @GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         return filmService.getPopularFilms(count);
     }

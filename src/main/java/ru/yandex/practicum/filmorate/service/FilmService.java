@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.*;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
@@ -21,11 +21,11 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 public class FilmService {
 
     public static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
-    private final InMemoryFilmStorage filmStorage;
-    private final InMemoryUserStorage userStorage;
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -65,19 +65,22 @@ public class FilmService {
     }
 
     public void addLike(int filmId, int userId) {
+        log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().add(userId);
-        log.info("Фильму с id: " + filmId + " добавлен лайк пользователя с id: " + userId);
+        log.info(ADDED_LIKE, filmId, userId);
     }
 
     public void deleteLike(int filmId, int userId) {
+        log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().remove(userId);
-        log.info("Фильму с id: " + filmId + " удален лайк пользователя с id: " + userId);
+        log.info(DELETED_LIKE, filmId, userId);
     }
 
     public List<Film> getPopularFilms(int count) {
-        log.info("запрос популярных фильмов в количестве: " + count);
+        log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
+        log.info(GET_POPULAR_FILMS, count);
         return filmStorage.getAll()
                 .stream()
                 .sorted(this::compare)

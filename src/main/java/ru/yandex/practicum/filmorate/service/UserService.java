@@ -6,14 +6,16 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.yandex.practicum.filmorate.controller.Paths.GET_COMMON_FRIENDS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.GET_USER_FRIENDS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.UPDATE_FRIEND_PATH;
 import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
@@ -21,14 +23,14 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 @Slf4j
 public class UserService {
 
-    private final InMemoryUserStorage userStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage userStorage) {
+    public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
-    public void validateUser(User user) {
+    private void validateUser(User user) {
         if (user.getLogin().contains(" ")) {
             log.info(LOGIN_WITH_WHITESPACE, user.getLogin());
             throw new ValidationException(LOGIN_WITH_WHITESPACE_EX + user.getLogin());
@@ -63,14 +65,16 @@ public class UserService {
     }
 
     public void addFriend(int currentUserId, int friendId) {
+        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         user.getFriends().add(friendId);
         friend.getFriends().add(currentUserId);
-        log.info("Пользователю с id: " + currentUserId + " добавлен друг с id: " + friendId);
+        log.info(ADDED_FRIEND, friendId, currentUserId);
     }
 
     public void deleteFriend(int currentUserId, int friendId) {
+        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         if (!user.getFriends().contains(friendId)) {
@@ -80,25 +84,22 @@ public class UserService {
         if (friend.getFriends().contains(friendId)) {
             friend.getFriends().remove(currentUserId);
         }
-        log.info("Пользователь с id: " + currentUserId + " удалил друга с id: " + friendId);
+        log.info(DELETED_FRIEND, currentUserId, friendId);
     }
 
     public List<User> getUserFriends(int currentUserId) {
+        log.info(RECEIVED_GET + GET_USER_FRIENDS_PATH);
         User user = userStorage.getById(currentUserId);
-        List<User> friends = new ArrayList<>();
-        user.getFriends().forEach(friendId -> friends.add(userStorage.getById(friendId)));
-        log.info("Запрос списка друзей пользователя с id: " + currentUserId);
-        return friends;
+        log.info(GET_USER_FRIENDS, currentUserId);
+        return user.getFriends().stream().map(userStorage::getById).collect(Collectors.toList());
     }
 
     public List<User> findCommonFriends(int currentUserId, int friendId) {
+        log.info(RECEIVED_GET + GET_COMMON_FRIENDS_PATH);
         Set<Integer> friendsList1 = userStorage.getById(currentUserId).getFriends();
         Set<Integer> friendsList2 = userStorage.getById(friendId).getFriends();
         Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
-        List<User> friends = new ArrayList<>();
-        commonFriends.forEach(id -> friends.add(userStorage.getById(id)));
-        log.info("Запрос общих друзей пользователя с id: " + currentUserId + " и id: " + friendId);
-        return friends;
+        log.info(GET_COMMON_FRIENDS, currentUserId, friendId);
+        return commonFriends.stream().map(userStorage::getById).collect(Collectors.toList());
     }
-
 }

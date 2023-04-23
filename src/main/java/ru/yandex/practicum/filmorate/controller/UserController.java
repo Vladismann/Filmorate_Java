@@ -28,7 +28,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(GET_BY_ID)
+    @GetMapping(GET_BY_ID_PATH)
     public User getById(@PathVariable(value = "id") int id) {
         return userService.getUserById(id);
     }
@@ -57,12 +57,12 @@ public class UserController {
         userService.deleteFriend(id, friendId);
     }
 
-    @GetMapping(GET_USER_FRIENDS)
+    @GetMapping(GET_USER_FRIENDS_PATH)
     public Collection<User> getUserFriends(@PathVariable(value = "id") int id) {
         return userService.getUserFriends(id);
     }
 
-    @GetMapping(GET_COMMON_FRIENDS)
+    @GetMapping(GET_COMMON_FRIENDS_PATH)
     public Collection<User> getCommonFriends(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "otherId") int otherId) {
