@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
@@ -21,7 +22,6 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 public class UserService {
 
     private final InMemoryUserStorage userStorage;
-    private int id = 1;
 
     @Autowired
     public UserService(InMemoryUserStorage userStorage) {
@@ -40,20 +40,25 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        log.info(RECEIVED_POST + USERS_PATH);
         validateUser(user);
-        return userStorage.create(id++, user);
+        return userStorage.create(user);
     }
 
     public User updateUser(User user) {
+        log.info(RECEIVED_PUT + USERS_PATH);
         validateUser(user);
         return userStorage.update(user);
     }
 
     public Collection<User> getAllUsers() {
+        log.info(RECEIVED_GET + USERS_PATH);
+        log.info(RECEIVED_USERS, userStorage.getAll().size());
         return userStorage.getAll();
     }
 
     public User getUserById(int id) {
+        log.info(RECEIVED_GET + USERS_PATH + id);
         return userStorage.getById(id);
     }
 
