@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.*;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Slf4j
 @RestController
@@ -25,21 +26,25 @@ public class UserController {
 
     @GetMapping()
     public Collection<User> getAll() {
+        log.info(RECEIVED_GET + USERS_PATH);
         return userService.getAllUsers();
     }
 
     @GetMapping(GET_BY_ID_PATH)
     public User getById(@PathVariable(value = "id") int id) {
+        log.info(RECEIVED_GET + USERS_PATH + id);
         return userService.getUserById(id);
     }
 
     @PostMapping()
     public User create(@Valid @RequestBody User user) {
+        log.info(RECEIVED_POST + USERS_PATH);
         return userService.createUser(user);
     }
 
     @PutMapping()
     public User update(@Valid @RequestBody User user) {
+        log.info(RECEIVED_PUT + USERS_PATH);
         return userService.updateUser(user);
     }
 
@@ -47,6 +52,7 @@ public class UserController {
     public void addFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
+        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         userService.addFriend(id, friendId);
     }
 
@@ -54,11 +60,13 @@ public class UserController {
     public void deleteFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
+        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         userService.deleteFriend(id, friendId);
     }
 
     @GetMapping(GET_USER_FRIENDS_PATH)
     public Collection<User> getUserFriends(@PathVariable(value = "id") int id) {
+        log.info(RECEIVED_GET + GET_USER_FRIENDS_PATH);
         return userService.getUserFriends(id);
     }
 
@@ -66,6 +74,7 @@ public class UserController {
     public Collection<User> getCommonFriends(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "otherId") int otherId) {
+        log.info(RECEIVED_GET + GET_COMMON_FRIENDS_PATH);
         return userService.findCommonFriends(id, otherId);
     }
 

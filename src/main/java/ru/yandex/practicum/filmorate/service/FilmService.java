@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.*;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
@@ -42,44 +41,37 @@ public class FilmService {
     }
 
     public Film createFilm(Film film) {
-        log.info(RECEIVED_POST + FILMS_PATH);
         validateFilm(film);
         return filmStorage.create(film);
     }
 
     public Film updateFilm(Film film) {
-        log.info(RECEIVED_PUT + FILMS_PATH);
         validateFilm(film);
         return filmStorage.update(film);
     }
 
     public Collection<Film> getAll() {
-        log.info(RECEIVED_GET + FILMS_PATH);
         log.info(RECEIVED_FILMS, filmStorage.getAll().size());
         return filmStorage.getAll();
     }
 
     public Film getFilmById(int id) {
-        log.info(RECEIVED_GET + FILMS_PATH + id);
         return filmStorage.getById(id);
     }
 
     public void addLike(int filmId, int userId) {
-        log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().add(userId);
         log.info(ADDED_LIKE, filmId, userId);
     }
 
     public void deleteLike(int filmId, int userId) {
-        log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().remove(userId);
         log.info(DELETED_LIKE, filmId, userId);
     }
 
     public List<Film> getPopularFilms(int count) {
-        log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         log.info(GET_POPULAR_FILMS, count);
         return filmStorage.getAll()
                 .stream()

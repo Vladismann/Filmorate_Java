@@ -16,7 +16,6 @@ public abstract class InMemoryDefaultStorage<T extends Resource> implements Defa
     private final Map<Integer, T> storage = new HashMap<>();
     private int id = 1;
 
-
     @Override
     public void isResourceExist(int id) {
         if (!storage.containsKey(id) || id == 0) {

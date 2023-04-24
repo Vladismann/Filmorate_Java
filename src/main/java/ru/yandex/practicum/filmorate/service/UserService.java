@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.GET_COMMON_FRIENDS_PATH;
-import static ru.yandex.practicum.filmorate.controller.Paths.GET_USER_FRIENDS_PATH;
-import static ru.yandex.practicum.filmorate.controller.Paths.UPDATE_FRIEND_PATH;
-import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
@@ -42,30 +38,25 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        log.info(RECEIVED_POST + USERS_PATH);
         validateUser(user);
         return userStorage.create(user);
     }
 
     public User updateUser(User user) {
-        log.info(RECEIVED_PUT + USERS_PATH);
         validateUser(user);
         return userStorage.update(user);
     }
 
     public Collection<User> getAllUsers() {
-        log.info(RECEIVED_GET + USERS_PATH);
         log.info(RECEIVED_USERS, userStorage.getAll().size());
         return userStorage.getAll();
     }
 
     public User getUserById(int id) {
-        log.info(RECEIVED_GET + USERS_PATH + id);
         return userStorage.getById(id);
     }
 
     public void addFriend(int currentUserId, int friendId) {
-        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         user.getFriends().add(friendId);
@@ -74,7 +65,6 @@ public class UserService {
     }
 
     public void deleteFriend(int currentUserId, int friendId) {
-        log.info(RECEIVED_PUT + UPDATE_FRIEND_PATH);
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         if (!user.getFriends().contains(friendId)) {
@@ -88,14 +78,12 @@ public class UserService {
     }
 
     public List<User> getUserFriends(int currentUserId) {
-        log.info(RECEIVED_GET + GET_USER_FRIENDS_PATH);
         User user = userStorage.getById(currentUserId);
         log.info(GET_USER_FRIENDS, currentUserId);
         return user.getFriends().stream().map(userStorage::getById).collect(Collectors.toList());
     }
 
     public List<User> findCommonFriends(int currentUserId, int friendId) {
-        log.info(RECEIVED_GET + GET_COMMON_FRIENDS_PATH);
         Set<Integer> friendsList1 = userStorage.getById(currentUserId).getFriends();
         Set<Integer> friendsList2 = userStorage.getById(friendId).getFriends();
         Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
