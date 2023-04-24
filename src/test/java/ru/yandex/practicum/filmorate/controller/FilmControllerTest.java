@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,7 +19,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static ru.yandex.practicum.filmorate.controller.FilmController.CINEMA_BIRTHDAY;
+import static ru.yandex.practicum.filmorate.service.FilmService.CINEMA_BIRTHDAY;
 
 
 class FilmControllerTest {
@@ -38,8 +41,11 @@ class FilmControllerTest {
     @BeforeEach
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
+        InMemoryUserStorage userStorage = new InMemoryUserStorage();
+        FilmService filmService = new FilmService(filmStorage, userStorage);
         validator = factory.getValidator();
-        controller = new FilmController();
+        controller = new FilmController(filmService);
         filmWithEmptyName = new Film("", "test", TEST_DATE, 90);
         filmWithIncorrectDescription = new Film("test", "T".repeat(INCORRECT_DESCRIPTION_SIZE), TEST_DATE, 90);
         filmWithIncorrectRealiseDate = new Film("test", "test", dateBeforeCinemaBirthDate, 90);
