@@ -27,7 +27,7 @@ _SELECT g.name <br />
 FROM genres g <br />
 INNER JOIN film_genres fg ON fg.genre_id = g.genre_id <br />
 INNER JOIN films f ON f.film_id = fg.film_id_ <br />
-WHERE f.film_id = 228; _ <br />
+WHERE f.film_id = 228; <br />
 
 **Get name an count of likes 10 most popular films** <br />
 _SELECT f.name <br />
