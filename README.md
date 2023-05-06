@@ -23,7 +23,7 @@ FROM film_likes <br />
 WHERE film_id = 777);_ <br />
 
 **Get film genres names:** <br />
-_SELECT name <br />
+_SELECT g.name <br />
 FROM genres g <br />
 INNER JOIN film_genres fg ON fg.genre_id = g.genre_id <br />
 INNER JOIN films f ON f.film_id = fg.film_id_ <br />
