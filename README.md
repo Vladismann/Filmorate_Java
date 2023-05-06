@@ -13,21 +13,21 @@ FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
 FROM user_friends <br />
 WHERE user_id = 228 <br />
-AND confirmed = 1);_ <br />
+AND confirmed = 1); <br />_
 
 **Get users who add like to the film:**  <br />
 _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT user_id <br />
 FROM film_likes <br />
-WHERE film_id = 777);_ <br />
+WHERE film_id = 777); <br />_
 
 **Get film genres names:** <br />
 _SELECT g.name <br />
 FROM genres g <br />
 INNER JOIN film_genres fg ON fg.genre_id = g.genre_id <br />
-INNER JOIN films f ON f.film_id = fg.film_id_ <br />
-WHERE f.film_id = 228; <br />
+INNER JOIN films f ON f.film_id = fg.film_id <br />
+WHERE f.film_id = 228; <br />_
 
 **Get name an count of likes 10 most popular films** <br />
 _SELECT f.name <br />
