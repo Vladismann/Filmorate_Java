@@ -12,19 +12,11 @@ _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
 FROM user_friends <br />
-WHERE user_id = 228 <br />
-AND confirmed = 1); <br />_
-
-**Get common friends of different users:** <br />
-_SELECT * <br />
-FROM users <br />
-WHERE user_id IN (SELECT friend_id <br />
+WHERE user_id = 228
+UNION  <br />
+SELECT user_id <br />
 FROM user_friends <br />
-WHERE user_id = 228 <br />
-AND user_id = 777 <br />
-AND confirmed = 1 <br />
-GROUP BY friend_id
-HAVING COUNT(*) > 1); <br />_
+WHERE friend_id = 228); <br />_
 
 **Get users who add like to the film:**  <br />
 _SELECT * <br />
