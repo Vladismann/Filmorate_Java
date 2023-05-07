@@ -12,7 +12,7 @@ _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
 FROM user_friends <br />
-WHERE user_id = 228
+WHERE user_id = 228 <br />
 UNION  <br />
 SELECT user_id <br />
 FROM user_friends <br />
