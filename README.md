@@ -7,7 +7,7 @@
 **Query examples:**
 <br />
 
-**Get user friends:** <br />
+**Get user friends with id "228":** <br />
 _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
@@ -18,14 +18,14 @@ SELECT user_id <br />
 FROM user_friends <br />
 WHERE friend_id = 228); <br />_
 
-**Get users who add like to the film:**  <br />
+**Get users who add like to the film with id "777":**  <br />
 _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT user_id <br />
 FROM film_likes <br />
 WHERE film_id = 777); <br />_
 
-**Get film genres names:** <br />
+**Get film genres names with id "228":** <br />
 _SELECT g.name <br />
 FROM genres g <br />
 INNER JOIN film_genres fg ON fg.genre_id = g.genre_id <br />
