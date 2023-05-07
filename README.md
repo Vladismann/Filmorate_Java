@@ -3,7 +3,7 @@
 
 ### [**Database schema**](https://www.google.com](https://dbdiagram.io/d/64564506dca9fb07c49d5b10))
 ![Database Image](filmorate.png)
-
+#
 ## **Query examples:**
 ### **Get user friends with id "228":**
 _SELECT * <br />
