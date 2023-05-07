@@ -5,7 +5,7 @@
 ![Database Image](filmorate.png)
 
 ## **Query examples:**
-### **Get user friends with id "228":** <br />
+### **Get user friends with id "228":**
 _SELECT * <br />
 FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
@@ -38,3 +38,4 @@ INNER JOIN film_likes fl ON f.film_id = fl.film_id <br />
 GROUP BY f.name <br />
 ORDER BY likes <br />
 LIMIT 10;_
+##
