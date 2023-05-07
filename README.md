@@ -2,7 +2,7 @@
 ### **Educational project. Social network for rating movies.**
 
 ### [**Database schema**](https://www.google.com](https://dbdiagram.io/d/64564506dca9fb07c49d5b10))
-![Database Image](filmorate.png)
+![Database Image](DBSchema.png)
 #
 ## **Query examples:**
 ### **Get user friends with id "228":**
@@ -11,10 +11,7 @@ FROM users <br />
 WHERE user_id IN (SELECT friend_id <br />
 FROM user_friends <br />
 WHERE user_id = 228 <br />
-INTERSECT  <br />
-SELECT user_id <br />
-FROM user_friends <br />
-WHERE friend_id = 228); <br />_
+AND confirmed = 1);_ <br />
 
 ### **Get users who add like to the film with id "777":**
 _SELECT * <br />
