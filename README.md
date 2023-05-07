@@ -29,7 +29,7 @@ WHERE f.film_id = 228; <br />_
 
 ### **Get name and count of likes the 10 most popular films:**
 _SELECT f.name <br />
-COUNT fl.user_id AS likes <br />
+COUNT(fl.user_id) AS likes <br />
 FROM films f <br />
 INNER JOIN film_likes fl ON f.film_id = fl.film_id <br />
 GROUP BY f.name <br />
