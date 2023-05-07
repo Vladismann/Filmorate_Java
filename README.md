@@ -1,10 +1,10 @@
 # java-filmorate
-# **Educational project. Social network for rating movies.** h1
+# **Educational project. Social network for rating movies.**
 
 ## [**Database schema**](https://www.google.com](https://dbdiagram.io/d/64564506dca9fb07c49d5b10))
 ![Database Image](filmorate.png)
 
-#**Query examples:**
+# **Query examples:**
 <br />
 
 ## **Get user friends with id "228":** <br />
