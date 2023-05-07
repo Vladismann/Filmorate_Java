@@ -5,8 +5,6 @@
 ![Database Image](filmorate.png)
 
 # **Query examples:**
-<br />
-
 ## **Get user friends with id "228":** <br />
 _SELECT * <br />
 FROM users <br />
