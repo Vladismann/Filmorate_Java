@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS user_friends (
         user_id INTEGER NOT NULL REFERENCES users(user_id),
         friend_id INTEGER NOT NULL REFERENCES users(user_id),
-        confirmed BOOLEAN NOT NULL DEFAULT 0,
+        --подтверждение дружбы по умолчанию пока 1, так как пока нет запросов на подтверждение
+        confirmed BOOLEAN NOT NULL DEFAULT 1,
         created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
