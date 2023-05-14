@@ -22,10 +22,17 @@ public final class TechnicalMessages {
     public static final String LOGIN_WITH_WHITESPACE = "Отправлен логин с пробелом: {}";
     public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел: ";
     public static final String USER_HAS_EMPTY_NAME = "Пустое имя заменено на логин пользователя: {}";
-    public static final String USER_NOT_FOUND_LOGIN_EX = "Ресурс не создан. Логин: ";
-    public static final String USER_NOT_FOUND_LOGIN = "Пользователь с логином {} не найден.";
+
+    public static final String USER_NOT_FOUND_LOGIN_EX = "Пользователь не найден. Логин: ";
     public static final String USER_FOUND_LOGIN = "Пользователь с логином {} найден: {}";
-    public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Логин : ";
+    public static final String USER_NOT_FOUND_LOGIN = "Пользователь с логином {} не найден.";
+
+    public static final String USER_NOT_FOUND_ID_EX = "Пользователь не найден. Id: ";
+    public static final String USER_FOUND_ID= "Пользователь с id {} найден: {}";
+    public static final String USER_NOT_FOUND_ID = "Пользователь с id {} не найден.";
+
+    public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Пользователь: {}";
+    public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: {}";
 
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
     public static final String FRIEND_NOT_FOUND_EX = "Друг не найден: ";

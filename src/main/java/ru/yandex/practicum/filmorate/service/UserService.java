@@ -3,9 +3,11 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
+
+import java.util.Collection;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
@@ -13,10 +15,10 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 @Slf4j
 public class UserService {
 
-    private final UserDbStorage userStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public UserService(UserDbStorage userStorage) {
+    public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -36,21 +38,21 @@ public class UserService {
         return userStorage.createUser(user);
     }
 
-    /*public User updateUser(User user) {
+    public User updateUser(User user) {
         validateUser(user);
-        return userStorage.update(user);
+        return userStorage.updateUser(user);
     }
 
     public Collection<User> getAllUsers() {
-        log.info(RECEIVED_USERS, userStorage.getAll().size());
-        return userStorage.getAll();
+        log.info(RECEIVED_USERS, userStorage.getAllUsers().size());
+        return userStorage.getAllUsers();
     }
 
     public User getUserById(int id) {
-        return userStorage.getById(id);
+        return userStorage.getUserById(id);
     }
 
-    public void addFriend(int currentUserId, int friendId) {
+    /*public void addFriend(int currentUserId, int friendId) {
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         user.getFriends().add(friendId);
