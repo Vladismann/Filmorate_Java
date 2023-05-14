@@ -22,6 +22,7 @@ public final class TechnicalMessages {
     public static final String LOGIN_WITH_WHITESPACE = "Отправлен логин с пробелом: {}";
     public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел: ";
     public static final String USER_HAS_EMPTY_NAME = "Пустое имя заменено на логин пользователя: {}";
+    public static final String USER_CREATED = "Создан пользователь: {}";
 
     public static final String USER_NOT_FOUND_LOGIN_EX = "Пользователь не найден. Логин: ";
     public static final String USER_FOUND_LOGIN = "Пользователь с логином {} найден: {}";

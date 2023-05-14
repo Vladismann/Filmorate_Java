@@ -89,7 +89,9 @@ public class UserDbStorageImpl implements UserStorage {
         String userLogin = user.getLogin();
         int createdRows = jdbcTemplate.update(CREATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday());
         if (createdRows == 1) {
-            return getUserByLogin(userLogin);
+            User createdUser = getUserByLogin(userLogin);
+            log.info(USER_CREATED, createdUser);
+            return createdUser;
         } else {
             log.info(USER_CREATION_ERROR, user);
             throw new RuntimeException();
