@@ -2,15 +2,17 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.*;
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_POST;
 
 @Slf4j
 @RestController
@@ -24,7 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    /*@GetMapping()
     public Collection<User> getAll() {
         log.info(RECEIVED_GET + USERS_PATH);
         return userService.getAllUsers();
@@ -34,7 +36,7 @@ public class UserController {
     public User getById(@PathVariable(value = "id") int id) {
         log.info(RECEIVED_GET + USERS_PATH + id);
         return userService.getUserById(id);
-    }
+    }*/
 
     @PostMapping()
     public User create(@Valid @RequestBody User user) {
@@ -42,7 +44,7 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PutMapping()
+    /*@PutMapping()
     public User update(@Valid @RequestBody User user) {
         log.info(RECEIVED_PUT + USERS_PATH);
         return userService.updateUser(user);
@@ -76,6 +78,6 @@ public class UserController {
             @PathVariable(value = "otherId") int otherId) {
         log.info(RECEIVED_GET + GET_COMMON_FRIENDS_PATH);
         return userService.findCommonFriends(id, otherId);
-    }
+    }*/
 
 }

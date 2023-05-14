@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -11,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 public class User implements Resource {
 
     private int id;
@@ -25,13 +27,4 @@ public class User implements Resource {
     @JsonIgnore
     private final Set<Integer> friends = new HashSet<>();
 
-    public User() {
-    }
-
-    public User(String login, String name, String email, LocalDate birthday) {
-        this.login = login;
-        this.name = name;
-        this.email = email;
-        this.birthday = birthday;
-    }
 }

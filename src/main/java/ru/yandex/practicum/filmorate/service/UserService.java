@@ -3,15 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
@@ -19,10 +13,10 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 @Slf4j
 public class UserService {
 
-    private final UserStorage userStorage;
+    private final UserDbStorage userStorage;
 
     @Autowired
-    public UserService(UserStorage userStorage) {
+    public UserService(UserDbStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -39,10 +33,10 @@ public class UserService {
 
     public User createUser(User user) {
         validateUser(user);
-        return userStorage.create(user);
+        return userStorage.createUser(user);
     }
 
-    public User updateUser(User user) {
+    /*public User updateUser(User user) {
         validateUser(user);
         return userStorage.update(user);
     }
@@ -89,5 +83,5 @@ public class UserService {
         Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
         log.info(GET_COMMON_FRIENDS, currentUserId, friendId);
         return commonFriends.stream().map(userStorage::getById).collect(Collectors.toList());
-    }
+    }*/
 }

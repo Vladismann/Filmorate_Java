@@ -1,3 +1,4 @@
+/*
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,12 +21,11 @@ public class FilmService {
 
     public static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
     private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
+    //private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
     }
 
     private void validateFilm(Film film) {
@@ -59,7 +58,8 @@ public class FilmService {
         return filmStorage.getById(id);
     }
 
-    public void addLike(int filmId, int userId) {
+    */
+/*public void addLike(int filmId, int userId) {
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().add(userId);
         log.info(ADDED_LIKE, filmId, userId);
@@ -69,7 +69,8 @@ public class FilmService {
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().remove(userId);
         log.info(DELETED_LIKE, filmId, userId);
-    }
+    }*//*
+
 
     public List<Film> getPopularFilms(int count) {
         log.info(GET_POPULAR_FILMS, count);
@@ -80,4 +81,4 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
-}
+}*/

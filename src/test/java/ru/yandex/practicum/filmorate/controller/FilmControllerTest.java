@@ -1,3 +1,4 @@
+/*
 package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Assertions;
@@ -138,4 +139,4 @@ class FilmControllerTest {
         Assertions.assertEquals(1, errors.size());
     }
 
-}
+}*/

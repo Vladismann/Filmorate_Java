@@ -1,3 +1,4 @@
+/*
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,8 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-    @PutMapping(UPDATE_LIKE_PATH)
+    */
+/*@PutMapping(UPDATE_LIKE_PATH)
     public void addLike(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "userId") int userId) {
@@ -63,11 +65,12 @@ public class FilmController {
             @PathVariable(value = "userId") int userId) {
         log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         filmService.deleteLike(id, userId);
-    }
+    }*//*
+
 
     @GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);
     }
-}
+}*/
