@@ -87,7 +87,7 @@ public class UserDbStorageImpl implements UserStorage {
     @Override
     public User createUser(User user) {
         String userLogin = user.getLogin();
-        int createdRows = jdbcTemplate.update(CREATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday());
+        int createdRows = jdbcTemplate.update(CREATE_USER, userLogin, user.getName(), user.getEmail(), user.getBirthday());
         if (createdRows == 1) {
             User createdUser = getUserByLogin(userLogin);
             log.info(USER_CREATED, createdUser);
@@ -110,6 +110,35 @@ public class UserDbStorageImpl implements UserStorage {
         } else {
             log.info(USER_UPDATE_ERROR, user);
             throw new RuntimeException();
+        }
+    }
+
+    public boolean checkUserFriendShip(int userId, int friendId) {
+        User user = getUserById(userId);
+        User friend = getUserById(friendId);
+        boolean isExist = false;
+        if (user != null && friend != null) {
+            SqlRowSet firstUserFriendship = jdbcTemplate.queryForRowSet(CHECK_FRIENDSHIP, userId, friendId);
+            SqlRowSet secondUserFriendship = jdbcTemplate.queryForRowSet(CHECK_FRIENDSHIP, friendId, userId);
+            if (firstUserFriendship.next() && secondUserFriendship.next()) {
+                isExist = true;
+            }
+        }
+        return isExist;
+    }
+
+    public void addUserFriend(int userId, int friendId) {
+        if (!checkUserFriendShip(userId, friendId)) {
+            int createdRowsOne;
+            int createdRowsTwo;
+            createdRowsOne = jdbcTemplate.update(ADD_FRIEND, userId, friendId);
+            createdRowsTwo = jdbcTemplate.update(ADD_FRIEND, friendId, userId);
+            if (createdRowsOne == 1 && createdRowsTwo == 1) {
+                log.info(ADDED_FRIEND, userId, friendId);
+            }
+        } else {
+            log.info(CANT_ADD_FRIEND, userId, friendId);
+            throw new RuntimeException(CANT_ADD_FRIEND_EX + userId + ", " + friendId);
         }
     }
 

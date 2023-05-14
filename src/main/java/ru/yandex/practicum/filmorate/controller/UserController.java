@@ -9,8 +9,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import javax.validation.Valid;
 import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID_PATH;
-import static ru.yandex.practicum.filmorate.controller.Paths.USERS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.*;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Slf4j
@@ -49,7 +48,7 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    /*@PutMapping(UPDATE_FRIEND_PATH)
+    @PutMapping(UPDATE_FRIEND_PATH)
     public void addFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
@@ -57,7 +56,7 @@ public class UserController {
         userService.addFriend(id, friendId);
     }
 
-    @DeleteMapping(UPDATE_FRIEND_PATH)
+    /*@DeleteMapping(UPDATE_FRIEND_PATH)
     public void deleteFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {

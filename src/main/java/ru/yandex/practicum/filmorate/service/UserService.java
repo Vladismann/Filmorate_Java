@@ -52,15 +52,12 @@ public class UserService {
         return userStorage.getUserById(id);
     }
 
-    /*public void addFriend(int currentUserId, int friendId) {
-        User user = userStorage.getById(currentUserId);
-        User friend = userStorage.getById(friendId);
-        user.getFriends().add(friendId);
-        friend.getFriends().add(currentUserId);
+    public void addFriend(int currentUserId, int friendId) {
+        userStorage.addUserFriend(currentUserId, friendId);
         log.info(ADDED_FRIEND, friendId, currentUserId);
     }
 
-    public void deleteFriend(int currentUserId, int friendId) {
+    /*public void deleteFriend(int currentUserId, int friendId) {
         User user = userStorage.getById(currentUserId);
         User friend = userStorage.getById(friendId);
         if (!user.getFriends().contains(friendId)) {

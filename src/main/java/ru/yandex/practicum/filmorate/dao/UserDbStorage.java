@@ -15,4 +15,6 @@ public interface UserDbStorage {
     User createUser(User user);
 
     User updateUser(User user);
+
+    void addUserFriend(int userId, int friendId);
 }
