@@ -12,6 +12,8 @@ public final class TechnicalMessages {
     public static final String RECEIVED_PUT = "Получен запрос PUT ";
     public static final String GETTING_RESOURCE = "Ресурс запрошен: {}";
     //films
+    public static final String FILM_CREATED = "Добавлен фильм: {}";
+
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";
     public static final String RECEIVED_FILMS = "Получено количество фильмов: {}";

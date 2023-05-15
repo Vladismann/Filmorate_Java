@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 
-public interface FilmStorage extends DefaultStorage<Film> {
+public interface FilmStorage extends FilmDbStorage {
 }
