@@ -100,11 +100,8 @@ public class UserDbStorageImpl implements UserStorage {
 
     public User updateUser(User user) {
         int userId = user.getId();
-        User oldUser = getUserById(userId);
-        int createdRows = 0;
-        if (oldUser != null) {
-            createdRows = jdbcTemplate.update(UPDATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday(), userId);
-        }
+        getUserById(userId);
+        int createdRows = jdbcTemplate.update(UPDATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday(), userId);
         if (createdRows == 1) {
             return getUserById(userId);
         } else {
@@ -114,15 +111,12 @@ public class UserDbStorageImpl implements UserStorage {
     }
 
     public boolean checkUserFriendShip(int userId, int friendId) {
-        User user = getUserById(userId);
-        User friend = getUserById(friendId);
+        getUserById(userId);
+        getUserById(friendId);
         boolean isExist = false;
-        if (user != null && friend != null) {
-            SqlRowSet firstUserFriendship = jdbcTemplate.queryForRowSet(CHECK_FRIENDSHIP, userId, friendId);
-            SqlRowSet secondUserFriendship = jdbcTemplate.queryForRowSet(CHECK_FRIENDSHIP, friendId, userId);
-            if (firstUserFriendship.next() && secondUserFriendship.next()) {
-                isExist = true;
-            }
+        SqlRowSet firstUserFriendship = jdbcTemplate.queryForRowSet(CHECK_FRIENDSHIP, userId, friendId);
+        if (firstUserFriendship.next()) {
+            isExist = true;
         }
         return isExist;
     }
@@ -130,10 +124,8 @@ public class UserDbStorageImpl implements UserStorage {
     public void addUserFriend(int userId, int friendId) {
         if (!checkUserFriendShip(userId, friendId)) {
             int createdRowsOne;
-            int createdRowsTwo;
             createdRowsOne = jdbcTemplate.update(ADD_FRIEND, userId, friendId);
-            createdRowsTwo = jdbcTemplate.update(ADD_FRIEND, friendId, userId);
-            if (createdRowsOne == 1 && createdRowsTwo == 1) {
+            if (createdRowsOne == 1) {
                 log.info(ADDED_FRIEND, userId, friendId);
             }
         } else {
@@ -142,5 +134,44 @@ public class UserDbStorageImpl implements UserStorage {
         }
     }
 
-}
+    public void deleteUserFriend(int userId, int friendId) {
+        if (checkUserFriendShip(userId, friendId)) {
+            int createdRowsOne;
+            createdRowsOne = jdbcTemplate.update(DELETE_FRIEND, userId, friendId);
+            if (createdRowsOne == 1) {
+                log.info(DELETED_FRIEND, userId, friendId);
+            }
+        } else {
+            log.info(CANT_DELETE_FRIEND, userId, friendId);
+            throw new RuntimeException(CANT_DELETE_FRIEND_EX + userId + ", " + friendId);
+        }
+    }
 
+    public List<User> getUserFriends(int userId) {
+        log.info(GET_USER_FRIENDS, userId);
+        return jdbcTemplate.query(getUserFriendsQuery(userId), (rs, rowNum) -> {
+            int id = rs.getInt("user_id");
+            String userLogin = rs.getString("login");
+            String userName = rs.getString("name");
+            String userEmail = rs.getString("email");
+            LocalDate userBirthDate = rs.getDate("birth_date").toLocalDate();
+            return User.builder()
+                    .id(id)
+                    .login(userLogin)
+                    .name(userName)
+                    .email(userEmail)
+                    .birthday(userBirthDate).build();
+        });
+    }
+
+    public List<User> getCommonFriends(int userId, int friendId) {
+        getUserById(userId);
+        getUserById(friendId);
+        List<User> userFriends = getUserFriends(userId);
+        List<User> friendFriends = getUserFriends(friendId);
+        userFriends.retainAll(friendFriends);
+        log.info(GET_COMMON_FRIENDS, userId, friendId);
+        return userFriends;
+    }
+
+}

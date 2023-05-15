@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
+import java.util.List;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
@@ -57,30 +58,15 @@ public class UserService {
         log.info(ADDED_FRIEND, friendId, currentUserId);
     }
 
-    /*public void deleteFriend(int currentUserId, int friendId) {
-        User user = userStorage.getById(currentUserId);
-        User friend = userStorage.getById(friendId);
-        if (!user.getFriends().contains(friendId)) {
-            throw new NotFoundException(FRIEND_NOT_FOUND_EX + friendId);
-        }
-        user.getFriends().remove(friendId);
-        if (friend.getFriends().contains(friendId)) {
-            friend.getFriends().remove(currentUserId);
-        }
-        log.info(DELETED_FRIEND, currentUserId, friendId);
+    public void deleteFriend(int currentUserId, int friendId) {
+        userStorage.deleteUserFriend(currentUserId, friendId);
     }
 
     public List<User> getUserFriends(int currentUserId) {
-        User user = userStorage.getById(currentUserId);
-        log.info(GET_USER_FRIENDS, currentUserId);
-        return user.getFriends().stream().map(userStorage::getById).collect(Collectors.toList());
+        return userStorage.getUserFriends(currentUserId);
     }
 
     public List<User> findCommonFriends(int currentUserId, int friendId) {
-        Set<Integer> friendsList1 = userStorage.getById(currentUserId).getFriends();
-        Set<Integer> friendsList2 = userStorage.getById(friendId).getFriends();
-        Set<Integer> commonFriends = friendsList1.stream().filter(friendsList2::contains).collect(Collectors.toSet());
-        log.info(GET_COMMON_FRIENDS, currentUserId, friendId);
-        return commonFriends.stream().map(userStorage::getById).collect(Collectors.toList());
-    }*/
+        return userStorage.getCommonFriends(currentUserId, friendId);
+    }
 }

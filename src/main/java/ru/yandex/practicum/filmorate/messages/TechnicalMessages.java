@@ -40,7 +40,11 @@ public final class TechnicalMessages {
     public static final String ADDED_FRIEND = "Пользователю с id: {} добавлен друг с id: {}";
     public static final String CANT_ADD_FRIEND = "Ошибка при добавлении пользователю с id: {} друга с id: {}";
     public static final String CANT_ADD_FRIEND_EX = "Ошибка при добавлении пользователей в друзья. Id:" ;
+
+    public static final String CANT_DELETE_FRIEND = "Ошибка при удалении друга пользователю с id: {} друга с id: {}";
+    public static final String CANT_DELETE_FRIEND_EX = "Ошибка при удалении дружбы пользователей. Id:" ;
     public static final String DELETED_FRIEND = "Пользователь с id: {} удалил друга с id: {}";
+
     public static final String GET_USER_FRIENDS = "Запрос списка друзей пользователя с id: {}";
     public static final String GET_COMMON_FRIENDS = "Запрос общих друзей пользователя с id: {} и id: {}";
 }

@@ -56,7 +56,7 @@ public class UserController {
         userService.addFriend(id, friendId);
     }
 
-    /*@DeleteMapping(UPDATE_FRIEND_PATH)
+    @DeleteMapping(UPDATE_FRIEND_PATH)
     public void deleteFriend(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "friendId") int friendId) {
@@ -76,6 +76,6 @@ public class UserController {
             @PathVariable(value = "otherId") int otherId) {
         log.info(RECEIVED_GET + GET_COMMON_FRIENDS_PATH);
         return userService.findCommonFriends(id, otherId);
-    }*/
+    }
 
 }
