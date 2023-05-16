@@ -138,7 +138,9 @@ public class FilmDbStorageImpl implements FilmStorage {
                 throw new RuntimeException(DELETE_FILM_GENRES_EX + filmId);
             }
         }
-        addFilmGenres(newGenres, filmId);
+        if (newGenres != null) {
+            addFilmGenres(newGenres, filmId);
+        }
     }
 
     @Override
@@ -147,9 +149,7 @@ public class FilmDbStorageImpl implements FilmStorage {
         getFilmById(filmId);
         int createdRows = jdbcTemplate.update(
                 UPDATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), filmId);
-        if (film.getGenres() != null) {
-            updateFilmGenres(filmId, film.getGenres());
-        }
+        updateFilmGenres(filmId, film.getGenres());
         if (createdRows == 1) {
             return getFilmById(filmId);
         } else {
