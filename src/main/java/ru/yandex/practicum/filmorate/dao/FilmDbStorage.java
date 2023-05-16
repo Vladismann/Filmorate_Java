@@ -11,4 +11,6 @@ public interface FilmDbStorage {
     Film createFilm(Film film);
 
     Film getFilmById(int id);
+
+    Film updateFilm(Film film);
 }

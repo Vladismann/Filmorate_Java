@@ -14,14 +14,17 @@ public final class TechnicalMessages {
     public static final String GET_MAX_ID_ERROR = "Ошибка при получении максимального id: ";
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";
-    public static final String FILM_FOUND_ID = "Фильм с id {} найден: {}";
 
+    public static final String FILM_FOUND_ID = "Фильм с id {} найден: {}";
     public static final String FILM_NOT_FOUND_ID = "Фильм с id: {} не найден.";
     public static final String FILM_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
 
     public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
+    public static final String DELETE_FILM_GENRES = "Старые жанры фильма с id: {} удалены";
+    public static final String DELETE_FILM_GENRES_EX = "Невозможно удалить жанры фильма с id: ";
 
-    public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Пользователь: {}";
+    public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Фильм: ";
+    public static final String FILM_UPDATE_ERROR = "Ошибка при обновлении фильма. Фильм: ";
     public static final String FILM_GENRE_ADD_ERROR_EX = "Ошибка при добавлении жанров фильму с id: ";
     public static final String FILM_ADDED_GENRE = "Фильму с id: {} добавлен жанр с id: {}";
 
@@ -38,16 +41,12 @@ public final class TechnicalMessages {
     public static final String USER_HAS_EMPTY_NAME = "Пустое имя заменено на логин пользователя: {}";
     public static final String USER_CREATED = "Создан пользователь: {}";
 
-    public static final String USER_NOT_FOUND_LOGIN_EX = "Пользователь не найден. Логин: ";
-    public static final String USER_FOUND_LOGIN = "Пользователь с логином {} найден: {}";
-    public static final String USER_NOT_FOUND_LOGIN = "Пользователь с логином {} не найден.";
-
     public static final String USER_NOT_FOUND_ID_EX = "Пользователь не найден. Id: ";
     public static final String USER_FOUND_ID= "Пользователь с id {} найден: {}";
     public static final String USER_NOT_FOUND_ID = "Пользователь с id {} не найден.";
 
     public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Пользователь: {}";
-    public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: {}";
+    public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: ";
 
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
     public static final String FRIEND_NOT_FOUND_EX = "Друг не найден: ";

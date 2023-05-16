@@ -12,8 +12,7 @@ import java.util.Collection;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
 import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID_PATH;
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_GET;
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_POST;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Slf4j
 @RestController
@@ -45,13 +44,13 @@ public class FilmController {
         return filmService.createFilm(film);
     }
 
-   /* @PutMapping()
+   @PutMapping()
     public Film update(@Valid @RequestBody Film film) {
         log.info(RECEIVED_PUT + FILMS_PATH);
         return filmService.updateFilm(film);
     }
 
-    @PutMapping(UPDATE_LIKE_PATH)
+    /* @PutMapping(UPDATE_LIKE_PATH)
     public void addLike(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "userId") int userId) {

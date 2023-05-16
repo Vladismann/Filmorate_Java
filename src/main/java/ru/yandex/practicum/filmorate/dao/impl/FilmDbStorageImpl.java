@@ -40,7 +40,7 @@ public class FilmDbStorageImpl implements FilmStorage {
         return jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
             int id = rs.getInt("genre_id");
             String genreName = rs.getString("genre_name");
-            return new Genre(id);
+            return new Genre(id, genreName);
         });
     }
 
@@ -124,10 +124,38 @@ public class FilmDbStorageImpl implements FilmStorage {
             log.info(FILM_CREATED, film);
             return film;
         } else {
-            log.info(FILM_CREATION_ERROR, film);
-            throw new RuntimeException();
+            log.info(FILM_CREATION_ERROR + film);
+            throw new RuntimeException(FILM_CREATION_ERROR + film);
         }
     }
 
+    public void updateFilmGenres(int filmId, List<Genre> newGenres) {
+        if (!getFilmGenres(filmId).isEmpty()) {
+            int createdRowsOne = jdbcTemplate.update(DELETE_OLD_GENRES, filmId);
+            if (createdRowsOne == 1) {
+                log.info(DELETE_FILM_GENRES, filmId);
+            } else {
+                throw new RuntimeException(DELETE_FILM_GENRES_EX + filmId);
+            }
+        }
+        addFilmGenres(newGenres, filmId);
+    }
+
+    @Override
+    public Film updateFilm(Film film) {
+        int filmId = film.getId();
+        getFilmById(filmId);
+        int createdRows = jdbcTemplate.update(
+                UPDATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), filmId);
+        if (film.getGenres() != null) {
+            updateFilmGenres(filmId, film.getGenres());
+        }
+        if (createdRows == 1) {
+            return getFilmById(filmId);
+        } else {
+            log.info(FILM_UPDATE_ERROR + film);
+            throw new RuntimeException(FILM_UPDATE_ERROR + film);
+        }
+    }
 
 }

@@ -95,7 +95,7 @@ public class UserDbStorageImpl implements UserStorage {
             return getUserById(userId);
         } else {
             log.info(USER_UPDATE_ERROR, user);
-            throw new RuntimeException();
+            throw new RuntimeException(USER_UPDATE_ERROR + user);
         }
     }
 
