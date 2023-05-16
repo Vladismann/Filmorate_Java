@@ -3,16 +3,15 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID_PATH;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_GET;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_POST;
 
 @Slf4j
@@ -31,14 +30,14 @@ public class FilmController {
     public Collection<Film> getAll() {
         log.info(RECEIVED_GET + FILMS_PATH);
         return filmService.getAll();
-    }
+    }*/
 
     @GetMapping(GET_BY_ID_PATH)
     public Film getById(@PathVariable(value = "id") int id) {
         log.info(RECEIVED_GET + FILMS_PATH + id);
         return filmService.getFilmById(id);
     }
-*/
+
     @PostMapping()
     public Film create(@Valid @RequestBody Film film) {
         log.info(RECEIVED_POST + FILMS_PATH);

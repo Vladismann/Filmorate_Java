@@ -10,4 +10,6 @@ public interface FilmDbStorage {
     List<Genre> getFilmGenres(int filmId);
 
     Film createFilm(Film film);
+
+    Film getFilmById(int id);
 }

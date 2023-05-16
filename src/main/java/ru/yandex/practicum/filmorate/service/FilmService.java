@@ -41,6 +41,10 @@ public class FilmService {
         return filmStorage.createFilm(film);
     }
 
+    public Film getFilmById(int id) {
+        return filmStorage.getFilmById(id);
+    }
+
     /*public Film updateFilm(Film film) {
         validateFilm(film);
         return filmStorage.update(film);
@@ -50,11 +54,6 @@ public class FilmService {
         log.info(RECEIVED_FILMS, filmStorage.getAll().size());
         return filmStorage.getAll();
     }
-
-    public Film getFilmById(int id) {
-        return filmStorage.getById(id);
-    }
-
 
     public void addLike(int filmId, int userId) {
         userStorage.isResourceExist(userId);

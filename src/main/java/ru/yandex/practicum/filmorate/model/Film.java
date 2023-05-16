@@ -24,7 +24,7 @@ public class Film implements Resource {
     private int duration;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private MPA mpa;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    List<Genre> genres;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Genre> genres;
 
 }

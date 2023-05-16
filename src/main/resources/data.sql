@@ -1,5 +1,5 @@
 MERGE INTO rating_mpa
-  (rating_id, name, description)
+  (rating_id, rating_name, description)
 VALUES
   (1, 'G', 'У фильма нет возрастных ограничений'),
   (2, 'PG', 'Детям рекомендуется смотреть фильм с родителями'),
@@ -8,7 +8,7 @@ VALUES
   (5, 'NC-17', 'Лицам до 18 лет просмотр запрещён');
 
   MERGE INTO genres
-    (genre_id, name)
+    (genre_id, genre_name)
   VALUES
     (1, 'Комедия'),
     (2, 'Драма'),
