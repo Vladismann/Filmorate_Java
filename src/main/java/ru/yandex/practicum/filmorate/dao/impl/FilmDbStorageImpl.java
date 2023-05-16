@@ -26,6 +26,15 @@ public class FilmDbStorageImpl implements FilmStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private int lastFilmId() {
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_LAST_ID);
+        if (createdRows.next()) {
+            return createdRows.getInt("id");
+        } else {
+            throw new RuntimeException(GET_MAX_ID_ERROR);
+        }
+    }
+
     public List<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
         return jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
@@ -34,42 +43,61 @@ public class FilmDbStorageImpl implements FilmStorage {
         });
     }
 
-
-    public Film getFilmByName(String name) {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_NAME, name);
+    public Film getFilmById(int id) {
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_NAME, id);
         if (createdRows.next()) {
-            int filmId = createdRows.getInt("film_id");
+            String filmName = createdRows.getString("name");
             String filmDescription = createdRows.getString("description");
             LocalDate releaseDate = createdRows.getDate("release_date").toLocalDate();
             int duration = createdRows.getInt("duration");
             int rating_id = createdRows.getInt("rating_id");
-            List<Genre> genres = getFilmGenres(filmId);
+            List<Genre> genres = getFilmGenres(id);
             Film film = Film.builder()
-                    .id(filmId)
-                    .name(name)
+                    .id(id)
+                    .name(filmName)
                     .description(filmDescription)
                     .releaseDate(releaseDate)
                     .duration(duration)
                     .mpa(new MPA(rating_id))
                     .genres(genres)
                     .build();
-            log.info(FILM_FOUND_NAME, name, film);
+            log.info(FILM_FOUND_ID, id, film);
             return film;
         } else {
-            log.info(FILM_NOT_FOUND_NAME, name);
-            throw new NotFoundException(FILM_NOT_FOUND_NAME_EX + name);
+            log.info(FILM_NOT_FOUND_ID, id);
+            throw new NotFoundException(FILM_NOT_FOUND_ID_EX + id);
+        }
+    }
+
+    public void addFilmGenres(List<Genre> genres, int filmId) {
+        for (Genre genre : genres) {
+            try {
+                int genreId = genre.getId();
+                int createdRows = jdbcTemplate.update(ADD_FILM_GENRES, filmId, genreId);
+                if (createdRows == 0) {
+                    throw new RuntimeException(FILM_GENRE_ADD_ERROR_EX + filmId + System.lineSeparator() + genres);
+                } else {
+                    log.info(FILM_ADDED_GENRE, filmId, genreId);
+                }
+            } catch (RuntimeException exception) {
+                log.error(exception.getMessage());
+            }
         }
     }
 
     //@Override
     public Film createFilm(Film film) {
-        String filmName = film.getName();
+        int lastFilmId = lastFilmId();
         int createdRows = jdbcTemplate.update(
-                CREATE_FILM, filmName, film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
-        if (createdRows == 1) {
-            Film createdFilm = getFilmByName(filmName);
+                CREATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
+        int newFilmId = lastFilmId();
+        if (createdRows == 1 && newFilmId > lastFilmId) {
+            if (film.getGenres() != null) {
+                addFilmGenres(film.getGenres(), newFilmId);
+            }
+            film.setId(newFilmId);
             log.info(FILM_CREATED, film);
-            return createdFilm;
+            return film;
         } else {
             log.info(FILM_CREATION_ERROR, film);
             throw new RuntimeException();

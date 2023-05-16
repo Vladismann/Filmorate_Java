@@ -9,7 +9,5 @@ public interface FilmDbStorage {
 
     List<Genre> getFilmGenres(int filmId);
 
-    Film getFilmByName(String name);
-
     Film createFilm(Film film);
 }

@@ -24,24 +24,12 @@ public class UserDbStorageImpl implements UserStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public User getUserByLogin(String login) {
-        SqlRowSet userCreatedRows = jdbcTemplate.queryForRowSet(GET_USER_BY_LOGIN, login);
-        if (userCreatedRows.next()) {
-            int userId = userCreatedRows.getInt("user_id");
-            String userName = userCreatedRows.getString("name");
-            String userEmail = userCreatedRows.getString("email");
-            LocalDate userBirthDate = userCreatedRows.getDate("birth_date").toLocalDate();
-            User user = User.builder()
-                    .id(userId)
-                    .login(login)
-                    .name(userName)
-                    .email(userEmail)
-                    .birthday(userBirthDate).build();
-            log.info(USER_FOUND_LOGIN, login, user);
-            return user;
+    private int lastUserId() {
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_USER_LAST_ID);
+        if (createdRows.next()) {
+            return createdRows.getInt("id");
         } else {
-            log.info(USER_NOT_FOUND_LOGIN, login);
-            throw new NotFoundException(USER_NOT_FOUND_LOGIN_EX + login);
+            throw new RuntimeException(GET_MAX_ID_ERROR);
         }
     }
 
@@ -86,12 +74,13 @@ public class UserDbStorageImpl implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        String userLogin = user.getLogin();
-        int createdRows = jdbcTemplate.update(CREATE_USER, userLogin, user.getName(), user.getEmail(), user.getBirthday());
-        if (createdRows == 1) {
-            User createdUser = getUserByLogin(userLogin);
-            log.info(USER_CREATED, createdUser);
-            return createdUser;
+        int lastUserId = lastUserId();
+        int createdRows = jdbcTemplate.update(CREATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday());
+        int newUserId = lastUserId();
+        if (createdRows == 1 && newUserId > lastUserId) {
+            user.setId(newUserId);
+            log.info(USER_CREATED, user);
+            return user;
         } else {
             log.info(USER_CREATION_ERROR, user);
             throw new RuntimeException();

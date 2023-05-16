@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface UserDbStorage {
 
-    User getUserByLogin(String login);
-
     User getUserById(int id);
 
     List<User> getAllUsers();

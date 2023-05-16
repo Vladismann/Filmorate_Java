@@ -11,15 +11,20 @@ public final class TechnicalMessages {
     public static final String RECEIVED_POST = "Получен запрос POST ";
     public static final String RECEIVED_PUT = "Получен запрос PUT ";
     public static final String GETTING_RESOURCE = "Ресурс запрошен: {}";
+    public static final String GET_MAX_ID_ERROR = "Ошибка при получении максимального id: ";
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";
-    public static final String FILM_FOUND_NAME = "Фильм с названием {} найден: {}";
-    public static final String FILM_NOT_FOUND_NAME = "Фильм с названием {} не найден.";
-    public static final String FILM_NOT_FOUND_NAME_EX = "Фильм не найден. Название: ";
+    public static final String FILM_FOUND_ID = "Фильм с id {} найден: {}";
+
+    public static final String FILM_NOT_FOUND_ID = "Фильм с id: {} не найден.";
+    public static final String FILM_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
 
     public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
 
     public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Пользователь: {}";
+    public static final String FILM_GENRE_ADD_ERROR_EX = "Ошибка при добавлении жанров фильму с id: ";
+    public static final String FILM_ADDED_GENRE = "Фильму с id: {} добавлен жанр с id: {}";
+
 
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";
