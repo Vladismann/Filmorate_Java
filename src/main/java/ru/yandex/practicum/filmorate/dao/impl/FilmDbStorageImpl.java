@@ -65,7 +65,7 @@ public class FilmDbStorageImpl implements FilmStorage {
     public Film createFilm(Film film) {
         String filmName = film.getName();
         int createdRows = jdbcTemplate.update(
-                CREATE_FILM, filmName, film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa());
+                CREATE_FILM, filmName, film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
         if (createdRows == 1) {
             Film createdFilm = getFilmByName(filmName);
             log.info(FILM_CREATED, film);

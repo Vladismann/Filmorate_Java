@@ -7,6 +7,9 @@ public class MPA {
 
     int id;
 
+    public MPA() {
+    }
+
     public MPA(int id) {
         this.id = id;
     }

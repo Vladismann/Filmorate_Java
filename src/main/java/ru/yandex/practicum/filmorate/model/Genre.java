@@ -8,6 +8,9 @@ public class Genre {
 
     int id;
 
+    public Genre() {
+    }
+
     public Genre(int id) {
         this.id = id;
     }
