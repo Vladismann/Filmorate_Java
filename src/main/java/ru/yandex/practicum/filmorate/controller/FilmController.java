@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import java.util.Collection;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
 import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID_PATH;
@@ -26,11 +27,11 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    /*@GetMapping()
+    @GetMapping()
     public Collection<Film> getAll() {
         log.info(RECEIVED_GET + FILMS_PATH);
         return filmService.getAll();
-    }*/
+    }
 
     @GetMapping(GET_BY_ID_PATH)
     public Film getById(@PathVariable(value = "id") int id) {

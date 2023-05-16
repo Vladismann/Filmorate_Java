@@ -35,7 +35,7 @@ public class FilmDbStorageImpl implements FilmStorage {
         }
     }
 
-    public List<Genre> getFilmGenres(int filmId) {
+    private List<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
         return jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
             int id = rs.getInt("genre_id");
@@ -44,8 +44,9 @@ public class FilmDbStorageImpl implements FilmStorage {
         });
     }
 
+    @Override
     public Film getFilmById(int id) {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_NAME, id);
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_ID, id);
         if (createdRows.next()) {
             String filmName = createdRows.getString("name");
             String filmDescription = createdRows.getString("description");
@@ -71,7 +72,29 @@ public class FilmDbStorageImpl implements FilmStorage {
         }
     }
 
-    public void addFilmGenres(List<Genre> genres, int filmId) {
+    public List<Film> getAllFilms() {
+        return jdbcTemplate.query(GET_ALL_FILMS, (rs, rowNum) -> {
+            int id = rs.getInt("film_id");
+            String filmName = rs.getString("name");
+            String filmDescription = rs.getString("description");
+            LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
+            int duration = rs.getInt("duration");
+            int rating_id = rs.getInt("rating_id");
+            String ratingName = rs.getString("rating_name");
+            List<Genre> genres = getFilmGenres(id);
+            return Film.builder()
+                    .id(id)
+                    .name(filmName)
+                    .description(filmDescription)
+                    .releaseDate(releaseDate)
+                    .duration(duration)
+                    .mpa(new MPA(rating_id, ratingName))
+                    .genres(genres)
+                    .build();
+        });
+    }
+
+    private void addFilmGenres(List<Genre> genres, int filmId) {
         for (Genre genre : genres) {
             try {
                 int genreId = genre.getId();

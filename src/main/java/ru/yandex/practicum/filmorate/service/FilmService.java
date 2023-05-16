@@ -8,9 +8,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.INCORRECT_FILM_DATE;
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.INCORRECT_FILM_DATE_EX;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 @Slf4j
@@ -45,14 +45,16 @@ public class FilmService {
         return filmStorage.getFilmById(id);
     }
 
-    /*public Film updateFilm(Film film) {
-        validateFilm(film);
-        return filmStorage.update(film);
-    }
 
     public Collection<Film> getAll() {
-        log.info(RECEIVED_FILMS, filmStorage.getAll().size());
-        return filmStorage.getAll();
+        log.info(RECEIVED_FILMS, filmStorage.getAllFilms().size());
+        return filmStorage.getAllFilms();
+    }
+
+    /*
+    public Film updateFilm(Film film) {
+        validateFilm(film);
+        return filmStorage.update(film);
     }
 
     public void addLike(int filmId, int userId) {
@@ -66,7 +68,6 @@ public class FilmService {
         filmStorage.getById(filmId).getLikes().remove(userId);
         log.info(DELETED_LIKE, filmId, userId);
     }
-
 
     public List<Film> getPopularFilms(int count) {
         log.info(GET_POPULAR_FILMS, count);
