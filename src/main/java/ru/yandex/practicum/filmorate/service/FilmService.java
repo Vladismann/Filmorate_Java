@@ -1,4 +1,3 @@
-/*
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,11 +8,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.INCORRECT_FILM_DATE;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.INCORRECT_FILM_DATE_EX;
 
 @Service
 @Slf4j
@@ -35,16 +32,16 @@ public class FilmService {
         }
     }
 
-    private int compare(Film film1, Film film2) {
+    /*private int compare(Film film1, Film film2) {
         return Integer.compare(film2.getLikes().size(), film1.getLikes().size());
-    }
+    }*/
 
     public Film createFilm(Film film) {
         validateFilm(film);
-        return filmStorage.create(film);
+        return filmStorage.createFilm(film);
     }
 
-    public Film updateFilm(Film film) {
+    /*public Film updateFilm(Film film) {
         validateFilm(film);
         return filmStorage.update(film);
     }
@@ -58,8 +55,8 @@ public class FilmService {
         return filmStorage.getById(id);
     }
 
-    */
-/*public void addLike(int filmId, int userId) {
+
+    public void addLike(int filmId, int userId) {
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().add(userId);
         log.info(ADDED_LIKE, filmId, userId);
@@ -69,7 +66,7 @@ public class FilmService {
         userStorage.isResourceExist(userId);
         filmStorage.getById(filmId).getLikes().remove(userId);
         log.info(DELETED_LIKE, filmId, userId);
-    }*//*
+    }
 
 
     public List<Film> getPopularFilms(int count) {
@@ -79,6 +76,6 @@ public class FilmService {
                 .sorted(this::compare)
                 .limit(count)
                 .collect(Collectors.toList());
-    }
+    }*/
 
-}*/
+}

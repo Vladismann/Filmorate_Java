@@ -13,6 +13,13 @@ public final class TechnicalMessages {
     public static final String GETTING_RESOURCE = "Ресурс запрошен: {}";
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";
+    public static final String FILM_FOUND_NAME = "Фильм с названием {} найден: {}";
+    public static final String FILM_NOT_FOUND_NAME = "Фильм с названием {} не найден.";
+    public static final String FILM_NOT_FOUND_NAME_EX = "Фильм не найден. Название: ";
+
+    public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
+
+    public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Пользователь: {}";
 
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";

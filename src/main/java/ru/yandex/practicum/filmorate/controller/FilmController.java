@@ -1,18 +1,19 @@
-/*
+
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.List;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.*;
-import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
+import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
+import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_POST;
 
 @Slf4j
 @RestController
@@ -26,7 +27,7 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @GetMapping()
+    /*@GetMapping()
     public Collection<Film> getAll() {
         log.info(RECEIVED_GET + FILMS_PATH);
         return filmService.getAll();
@@ -37,21 +38,20 @@ public class FilmController {
         log.info(RECEIVED_GET + FILMS_PATH + id);
         return filmService.getFilmById(id);
     }
-
+*/
     @PostMapping()
     public Film create(@Valid @RequestBody Film film) {
         log.info(RECEIVED_POST + FILMS_PATH);
         return filmService.createFilm(film);
     }
 
-    @PutMapping()
+   /* @PutMapping()
     public Film update(@Valid @RequestBody Film film) {
         log.info(RECEIVED_PUT + FILMS_PATH);
         return filmService.updateFilm(film);
     }
 
-    */
-/*@PutMapping(UPDATE_LIKE_PATH)
+    @PutMapping(UPDATE_LIKE_PATH)
     public void addLike(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "userId") int userId) {
@@ -65,12 +65,12 @@ public class FilmController {
             @PathVariable(value = "userId") int userId) {
         log.info(RECEIVED_PUT + UPDATE_LIKE_PATH);
         filmService.deleteLike(id, userId);
-    }*//*
+    }
 
 
     @GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);
-    }
-}*/
+    }*/
+}
