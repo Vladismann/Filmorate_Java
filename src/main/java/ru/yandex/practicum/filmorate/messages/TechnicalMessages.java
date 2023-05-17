@@ -50,7 +50,7 @@ public final class TechnicalMessages {
     public static final String DELETE_LIKE_EX = "Лайк не существует. Id фильма и пользователя: ";
     public static final String DELETED_LIKE = "Фильму с id: {} удален лайк пользователя с id: {}";
 
-    public static final String GET_POPULAR_FILMS =  "Запрос популярных фильмов в количестве: {}";
+    public static final String GET_POPULAR_FILMS = "Запрос популярных фильмов в количестве: {}";
 
     //users
     public static final String LOGIN_WITH_WHITESPACE = "Отправлен логин с пробелом: {}";
@@ -59,7 +59,7 @@ public final class TechnicalMessages {
     public static final String USER_CREATED = "Создан пользователь: {}";
 
     public static final String USER_NOT_FOUND_ID_EX = "Пользователь не найден. Id: ";
-    public static final String USER_FOUND_ID= "Пользователь найден: {}";
+    public static final String USER_FOUND_ID = "Пользователь найден: {}";
     public static final String USER_NOT_FOUND_ID = "Пользователь с id {} не найден.";
 
     public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Пользователь: {}";
@@ -69,9 +69,9 @@ public final class TechnicalMessages {
 
     public static final String ADDED_FRIEND = "Пользователю с id: {} добавлен друг с id: {}";
     public static final String CANT_ADD_FRIEND = "Ошибка при добавлении пользователю с id: {} друга с id: {}. Уже был добавлен.";
-    public static final String CANT_ADD_FRIEND_EX = "Дружба пользователей уже существует. Id пользователей: " ;
+    public static final String CANT_ADD_FRIEND_EX = "Дружба пользователей уже существует. Id пользователей: ";
     public static final String CANT_DELETE_FRIEND = "Ошибка при удалении друга пользователю с id: {} друга с id: {}. Не найдено.";
-    public static final String CANT_DELETE_FRIEND_EX = "Дружба не найдена. Id пользователей:" ;
+    public static final String CANT_DELETE_FRIEND_EX = "Дружба не найдена. Id пользователей:";
     public static final String DELETED_FRIEND = "Пользователь с id: {} удалил друга с id: {}";
 
     public static final String GET_USER_FRIENDS = "Запрос списка друзей пользователя с id: {}";
