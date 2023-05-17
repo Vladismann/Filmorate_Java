@@ -16,9 +16,13 @@ public final class TechnicalMessages {
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";
 
-    public static final String FILM_FOUND_ID = "Фильм с id {} найден: {}";
+    public static final String FILM_FOUND_ID = "Фильм найден: {}";
     public static final String FILM_NOT_FOUND_ID = "Фильм с id: {} не найден.";
     public static final String FILM_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
+
+    public static final String GENRE_FOUND_ID = "Жанр найден: {}";
+    public static final String GENRE_NOT_FOUND_ID = "Фильм с id: {} не найден.";
+    public static final String GENRE_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
 
     public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
     public static final String DELETE_FILM_GENRES = "Старые жанры фильма с id: {} удалены";
@@ -32,6 +36,7 @@ public final class TechnicalMessages {
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";
     public static final String RECEIVED_FILMS = "Получено количество фильмов: {}";
+    public static final String RECEIVED_GENRES = "Запрошены все жанры: {}";
 
     public static final String ADDED_LIKE = "Фильму с id: {} добавлен лайк пользователя с id: {}";
     public static final String ADD_LIKE_ERROR = "Фильму с id: {} невозможно добавить лайк пользователя с id: {}. Уже существует";
@@ -49,7 +54,7 @@ public final class TechnicalMessages {
     public static final String USER_CREATED = "Создан пользователь: {}";
 
     public static final String USER_NOT_FOUND_ID_EX = "Пользователь не найден. Id: ";
-    public static final String USER_FOUND_ID= "Пользователь с id {} найден: {}";
+    public static final String USER_FOUND_ID= "Пользователь найден: {}";
     public static final String USER_NOT_FOUND_ID = "Пользователь с id {} не найден.";
 
     public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Пользователь: {}";

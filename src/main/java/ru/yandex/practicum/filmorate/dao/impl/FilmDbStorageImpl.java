@@ -69,7 +69,7 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .mpa(new MPA(rating_id, ratingName))
                     .genres(genres)
                     .build();
-            log.info(FILM_FOUND_ID, id, film);
+            log.info(FILM_FOUND_ID, film);
             return film;
         } else {
             log.info(FILM_NOT_FOUND_ID, id);
@@ -223,6 +223,30 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .likesCount(likes)
                     .build();
         });
+    }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        log.info(GET_ALL_GENRES);
+        return jdbcTemplate.query(GET_ALL_GENRES, (rs, rowNum) -> {
+            int id = rs.getInt("genre_id");
+            String genreName = rs.getString("genre_name");
+            return new Genre(id, genreName);
+        });
+    }
+
+    @Override
+    public Genre getGenreById(int id) {
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_GENRE_BY_ID, id);
+        if (createdRows.next()) {
+            String genreName = createdRows.getString("genre_name");
+            Genre genre = new Genre(id, genreName);
+            log.info(GENRE_FOUND_ID, genre);
+            return genre;
+        } else {
+            log.info(GENRE_NOT_FOUND_ID, id);
+            throw new NotFoundException(GENRE_NOT_FOUND_ID_EX + id);
+        }
     }
 
 }

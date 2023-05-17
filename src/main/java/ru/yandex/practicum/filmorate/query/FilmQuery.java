@@ -20,7 +20,6 @@ public class FilmQuery {
                 "INNER JOIN genres g ON fg.genre_id = g.genre_id " +
                 "WHERE fg.film_id = " + filmId;
     }
-
     public static final String DELETE_OLD_GENRES = "DELETE FROM film_genres WHERE film_id = ?";
     public static final String UPDATE_FILM = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE film_id = ?";
     public static final String ADD_LIKE = "INSERT INTO film_likes " +
@@ -36,4 +35,6 @@ public class FilmQuery {
                 "GROUP BY f.film_id " +
                 "ORDER BY likes DESC LIMIT " + count;
     }
+    public static final String GET_ALL_GENRES = "SELECT * FROM genres";
+    public static final String GET_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
 }

@@ -44,7 +44,7 @@ public class FilmController {
         return filmService.createFilm(film);
     }
 
-   @PutMapping()
+    @PutMapping()
     public Film update(@Valid @RequestBody Film film) {
         log.info(RECEIVED_PUT + FILMS_PATH);
         return filmService.updateFilm(film);
@@ -66,12 +66,10 @@ public class FilmController {
         filmService.deleteLike(id, userId);
     }
 
-
     @GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);
     }
-
 
 }
