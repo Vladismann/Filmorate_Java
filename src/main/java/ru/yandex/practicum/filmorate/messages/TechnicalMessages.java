@@ -21,8 +21,13 @@ public final class TechnicalMessages {
     public static final String FILM_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
 
     public static final String GENRE_FOUND_ID = "Жанр найден: {}";
-    public static final String GENRE_NOT_FOUND_ID = "Фильм с id: {} не найден.";
-    public static final String GENRE_NOT_FOUND_ID_EX = "Фильм не найден. Id: ";
+    public static final String GENRE_NOT_FOUND_ID = "Жанр с id: {} не найден.";
+    public static final String GENRE_NOT_FOUND_ID_EX = "Жанр не найден. Id: ";
+
+    public static final String GET_MPA = "Запрос списка mpa: {}";
+    public static final String MPA_FOUND_ID = "MPA найден: {}";
+    public static final String MPA_NOT_FOUND_ID = "MPA с id: {} не найден.";
+    public static final String MPA_NOT_FOUND_ID_EX = "MPA не найден. Id: ";
 
     public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
     public static final String DELETE_FILM_GENRES = "Старые жанры фильма с id: {} удалены";

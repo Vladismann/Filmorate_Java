@@ -13,7 +13,9 @@ import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
@@ -100,7 +102,8 @@ public class FilmDbStorageImpl implements FilmStorage {
     }
 
     private void addFilmGenres(List<Genre> genres, int filmId) {
-        for (Genre genre : genres) {
+        Set<Genre> uniqueGenres = new LinkedHashSet<>(genres);
+        for (Genre genre : uniqueGenres) {
             try {
                 int genreId = genre.getId();
                 int createdRows = jdbcTemplate.update(ADD_FILM_GENRES, filmId, genreId);
@@ -137,7 +140,7 @@ public class FilmDbStorageImpl implements FilmStorage {
     public void updateFilmGenres(int filmId, List<Genre> newGenres) {
         if (!getFilmGenres(filmId).isEmpty()) {
             int createdRowsOne = jdbcTemplate.update(DELETE_OLD_GENRES, filmId);
-            if (createdRowsOne == 1) {
+            if (createdRowsOne >= 1) {
                 log.info(DELETE_FILM_GENRES, filmId);
             } else {
                 throw new RuntimeException(DELETE_FILM_GENRES_EX + filmId);
@@ -227,8 +230,7 @@ public class FilmDbStorageImpl implements FilmStorage {
 
     @Override
     public List<Genre> getAllGenres() {
-        log.info(GET_ALL_GENRES);
-        return jdbcTemplate.query(GET_ALL_GENRES, (rs, rowNum) -> {
+        return jdbcTemplate.query(GET_ALL_GENRES_QUERY, (rs, rowNum) -> {
             int id = rs.getInt("genre_id");
             String genreName = rs.getString("genre_name");
             return new Genre(id, genreName);
@@ -246,6 +248,29 @@ public class FilmDbStorageImpl implements FilmStorage {
         } else {
             log.info(GENRE_NOT_FOUND_ID, id);
             throw new NotFoundException(GENRE_NOT_FOUND_ID_EX + id);
+        }
+    }
+
+    @Override
+    public List<MPA> getAllMPA() {
+        return jdbcTemplate.query(GET_ALL_MPA, (rs, rowNum) -> {
+            int id = rs.getInt("rating_id");
+            String genreName = rs.getString("rating_name");
+            return new MPA(id, genreName);
+        });
+    }
+
+    @Override
+    public MPA getMPAById(int id) {
+        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_MPA_BY_ID, id);
+        if (createdRows.next()) {
+            String genreName = createdRows.getString("rating_name");
+            MPA mpa = new MPA(id, genreName);
+            log.info(MPA_FOUND_ID, mpa);
+            return mpa;
+        } else {
+            log.info(MPA_NOT_FOUND_ID, id);
+            throw new NotFoundException(MPA_NOT_FOUND_ID_EX + id);
         }
     }
 

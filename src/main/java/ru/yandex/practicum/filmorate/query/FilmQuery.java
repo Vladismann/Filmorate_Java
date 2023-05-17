@@ -35,6 +35,8 @@ public class FilmQuery {
                 "GROUP BY f.film_id " +
                 "ORDER BY likes DESC LIMIT " + count;
     }
-    public static final String GET_ALL_GENRES = "SELECT * FROM genres";
+    public static final String GET_ALL_GENRES_QUERY = "SELECT * FROM genres";
     public static final String GET_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
+    public static final String GET_ALL_MPA = "SELECT * FROM rating_mpa";
+    public static final String GET_MPA_BY_ID = "SELECT * FROM rating_mpa WHERE rating_id = ?";
 }

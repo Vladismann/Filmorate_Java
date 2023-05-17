@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
@@ -71,7 +72,7 @@ public class FilmService {
     }
 
     public Collection<Genre> getAllGenres() {
-        log.info(GET_FILM_GENRES, filmStorage.getAllGenres());
+        log.info(RECEIVED_GENRES, filmStorage.getAllGenres());
         return filmStorage.getAllGenres();
     }
 
@@ -79,4 +80,12 @@ public class FilmService {
         return filmStorage.getGenreById(id);
     }
 
+    public Collection<MPA> getAllMpa() {
+        log.info(GET_MPA, filmStorage.getAllMPA());
+        return filmStorage.getAllMPA();
+    }
+
+    public MPA getMpaById(int id) {
+        return filmStorage.getMPAById(id);
+    }
 }
