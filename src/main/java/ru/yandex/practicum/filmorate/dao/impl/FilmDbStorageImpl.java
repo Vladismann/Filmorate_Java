@@ -60,7 +60,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             String filmDescription = createdRows.getString("description");
             LocalDate releaseDate = createdRows.getDate("release_date").toLocalDate();
             int duration = createdRows.getInt("duration");
-            int rating_id = createdRows.getInt("rating_id");
+            int ratingId = createdRows.getInt("rating_id");
             String ratingName = createdRows.getString("rating_name");
             List<Genre> genres = getFilmGenres(id);
             Film film = Film.builder()
@@ -69,7 +69,7 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .description(filmDescription)
                     .releaseDate(releaseDate)
                     .duration(duration)
-                    .mpa(new MPA(rating_id, ratingName))
+                    .mpa(new MPA(ratingId, ratingName))
                     .genres(genres)
                     .build();
             log.info(FILM_FOUND_ID, film);
@@ -87,7 +87,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             String filmDescription = rs.getString("description");
             LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
             int duration = rs.getInt("duration");
-            int rating_id = rs.getInt("rating_id");
+            int ratingId = rs.getInt("rating_id");
             String ratingName = rs.getString("rating_name");
             List<Genre> genres = getFilmGenres(id);
             return Film.builder()
@@ -96,7 +96,7 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .description(filmDescription)
                     .releaseDate(releaseDate)
                     .duration(duration)
-                    .mpa(new MPA(rating_id, ratingName))
+                    .mpa(new MPA(ratingId, ratingName))
                     .genres(genres)
                     .build();
         });
@@ -212,7 +212,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             String filmDescription = rs.getString("description");
             LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
             int duration = rs.getInt("duration");
-            int rating_id = rs.getInt("rating_id");
+            int ratingId = rs.getInt("rating_id");
             String ratingName = rs.getString("rating_name");
             int likes = rs.getInt("likes");
             List<Genre> genres = getFilmGenres(id);
@@ -222,7 +222,7 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .description(filmDescription)
                     .releaseDate(releaseDate)
                     .duration(duration)
-                    .mpa(new MPA(rating_id, ratingName))
+                    .mpa(new MPA(ratingId, ratingName))
                     .genres(genres)
                     .likesCount(likes)
                     .build();
