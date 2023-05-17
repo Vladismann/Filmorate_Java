@@ -66,7 +66,7 @@ public class FilmDbStorageTests {
     }
 
     @Test
-    public void CreateFilm() {
+    public void createFilm() {
         filmDbStorage.createFilm(testFilm1);
         assertEquals(testFilm1, filmDbStorage.getFilmById(1));
     }
