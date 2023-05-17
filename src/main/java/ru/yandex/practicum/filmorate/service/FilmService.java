@@ -57,19 +57,17 @@ public class FilmService {
         return filmStorage.updateFilm(film);
     }
 
-    /*public void addLike(int filmId, int userId) {
-        userStorage.isResourceExist(userId);
-        filmStorage.getById(filmId).getLikes().add(userId);
+    public void addLike(int filmId, int userId) {
+        filmStorage.addLikeToFilm(filmId, userId);
         log.info(ADDED_LIKE, filmId, userId);
     }
 
     public void deleteLike(int filmId, int userId) {
-        userStorage.isResourceExist(userId);
-        filmStorage.getById(filmId).getLikes().remove(userId);
+        filmStorage.deleteLikeToFilm(filmId, userId);
         log.info(DELETED_LIKE, filmId, userId);
     }
 
-    public List<Film> getPopularFilms(int count) {
+    /*public List<Film> getPopularFilms(int count) {
         log.info(GET_POPULAR_FILMS, count);
         return filmStorage.getAll()
                 .stream()

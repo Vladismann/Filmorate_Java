@@ -10,8 +10,7 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import javax.validation.Valid;
 import java.util.Collection;
 
-import static ru.yandex.practicum.filmorate.controller.Paths.FILMS_PATH;
-import static ru.yandex.practicum.filmorate.controller.Paths.GET_BY_ID_PATH;
+import static ru.yandex.practicum.filmorate.controller.Paths.*;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Slf4j
@@ -50,7 +49,7 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-    /* @PutMapping(UPDATE_LIKE_PATH)
+    @PutMapping(UPDATE_LIKE_PATH)
     public void addLike(
             @PathVariable(value = "id") int id,
             @PathVariable(value = "userId") int userId) {
@@ -67,7 +66,7 @@ public class FilmController {
     }
 
 
-    @GetMapping(GET_POPULAR_FILMS_PATH)
+    /*@GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);

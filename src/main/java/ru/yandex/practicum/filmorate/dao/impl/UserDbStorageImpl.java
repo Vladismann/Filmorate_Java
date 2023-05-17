@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -87,6 +88,7 @@ public class UserDbStorageImpl implements UserStorage {
         }
     }
 
+    @Override
     public User updateUser(User user) {
         int userId = user.getId();
         getUserById(userId);
@@ -99,7 +101,7 @@ public class UserDbStorageImpl implements UserStorage {
         }
     }
 
-    public boolean checkUserFriendShip(int userId, int friendId) {
+    private boolean checkUserFriendShip(int userId, int friendId) {
         getUserById(userId);
         getUserById(friendId);
         boolean isExist = false;
@@ -110,32 +112,33 @@ public class UserDbStorageImpl implements UserStorage {
         return isExist;
     }
 
+    @Override
     public void addUserFriend(int userId, int friendId) {
         if (!checkUserFriendShip(userId, friendId)) {
-            int createdRowsOne;
-            createdRowsOne = jdbcTemplate.update(ADD_FRIEND, userId, friendId);
-            if (createdRowsOne == 1) {
+            int createdRows = jdbcTemplate.update(ADD_FRIEND, userId, friendId);
+            if (createdRows == 1) {
                 log.info(ADDED_FRIEND, userId, friendId);
             }
         } else {
             log.info(CANT_ADD_FRIEND, userId, friendId);
-            throw new RuntimeException(CANT_ADD_FRIEND_EX + userId + ", " + friendId);
+            throw new ValidationException(CANT_ADD_FRIEND_EX + userId + ", " + friendId);
         }
     }
 
+    @Override
     public void deleteUserFriend(int userId, int friendId) {
         if (checkUserFriendShip(userId, friendId)) {
-            int createdRowsOne;
-            createdRowsOne = jdbcTemplate.update(DELETE_FRIEND, userId, friendId);
-            if (createdRowsOne == 1) {
+            int createdRows = jdbcTemplate.update(DELETE_FRIEND, userId, friendId);
+            if (createdRows == 1) {
                 log.info(DELETED_FRIEND, userId, friendId);
             }
         } else {
             log.info(CANT_DELETE_FRIEND, userId, friendId);
-            throw new RuntimeException(CANT_DELETE_FRIEND_EX + userId + ", " + friendId);
+            throw new NotFoundException(CANT_DELETE_FRIEND_EX + userId + ", " + friendId);
         }
     }
 
+    @Override
     public List<User> getUserFriends(int userId) {
         log.info(GET_USER_FRIENDS, userId);
         return jdbcTemplate.query(getUserFriendsQuery(userId), (rs, rowNum) -> {
@@ -153,6 +156,7 @@ public class UserDbStorageImpl implements UserStorage {
         });
     }
 
+    @Override
     public List<User> getCommonFriends(int userId, int friendId) {
         getUserById(userId);
         getUserById(friendId);

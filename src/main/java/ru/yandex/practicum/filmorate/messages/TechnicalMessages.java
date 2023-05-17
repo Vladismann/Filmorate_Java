@@ -32,9 +32,16 @@ public final class TechnicalMessages {
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";
     public static final String RECEIVED_FILMS = "Получено количество фильмов: {}";
+
     public static final String ADDED_LIKE = "Фильму с id: {} добавлен лайк пользователя с id: {}";
+    public static final String ADD_LIKE_ERROR = "Фильму с id: {} невозможно добавить лайк пользователя с id: {}. Уже существует";
+    public static final String DELETE_LIKE_ERROR = "Фильму с id: {} невозможно удалить лайк пользователя с id: {}. Не существует.";
+    public static final String ADD_LIKE_EX = "Лайк уже существует. Id фильма и пользователя: ";
+    public static final String DELETE_LIKE_EX = "Лайк не существует. Id фильма и пользователя: ";
     public static final String DELETED_LIKE = "Фильму с id: {} удален лайк пользователя с id: {}";
+
     public static final String GET_POPULAR_FILMS =  "Запрос популярных фильмов в количестве: {}";
+
     //users
     public static final String LOGIN_WITH_WHITESPACE = "Отправлен логин с пробелом: {}";
     public static final String LOGIN_WITH_WHITESPACE_EX = "Логин не должен содержать пробел: ";
@@ -46,16 +53,16 @@ public final class TechnicalMessages {
     public static final String USER_NOT_FOUND_ID = "Пользователь с id {} не найден.";
 
     public static final String USER_CREATION_ERROR = "Ошибка при создании пользователя. Пользователь: {}";
-    public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: ";
+    public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: {}";
 
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
     public static final String FRIEND_NOT_FOUND_EX = "Друг не найден: ";
-    public static final String ADDED_FRIEND = "Пользователю с id: {} добавлен друг с id: {}";
-    public static final String CANT_ADD_FRIEND = "Ошибка при добавлении пользователю с id: {} друга с id: {}";
-    public static final String CANT_ADD_FRIEND_EX = "Ошибка при добавлении пользователей в друзья. Id:" ;
 
-    public static final String CANT_DELETE_FRIEND = "Ошибка при удалении друга пользователю с id: {} друга с id: {}";
-    public static final String CANT_DELETE_FRIEND_EX = "Ошибка при удалении дружбы пользователей. Id:" ;
+    public static final String ADDED_FRIEND = "Пользователю с id: {} добавлен друг с id: {}";
+    public static final String CANT_ADD_FRIEND = "Ошибка при добавлении пользователю с id: {} друга с id: {}. Уже был добавлен.";
+    public static final String CANT_ADD_FRIEND_EX = "Дружба пользователей уже существует. Id пользователей: " ;
+    public static final String CANT_DELETE_FRIEND = "Ошибка при удалении друга пользователю с id: {} друга с id: {}. Не найдено.";
+    public static final String CANT_DELETE_FRIEND_EX = "Дружба не найдена. Id пользователей:" ;
     public static final String DELETED_FRIEND = "Пользователь с id: {} удалил друга с id: {}";
 
     public static final String GET_USER_FRIENDS = "Запрос списка друзей пользователя с id: {}";

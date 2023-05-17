@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
@@ -21,9 +23,12 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
 public class FilmDbStorageImpl implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserDbStorageImpl userDbStorage;
 
-    public FilmDbStorageImpl(JdbcTemplate jdbcTemplate) {
+    @Autowired
+    public FilmDbStorageImpl(JdbcTemplate jdbcTemplate, UserDbStorageImpl userDbStorage) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userDbStorage = userDbStorage;
     }
 
     private int lastFilmId() {
@@ -157,5 +162,43 @@ public class FilmDbStorageImpl implements FilmStorage {
             throw new RuntimeException(FILM_UPDATE_ERROR + film);
         }
     }
+
+    private boolean checkFilmLike(int filmId, int userId) {
+        getFilmById(filmId);
+        userDbStorage.getUserById(userId);
+        boolean isExist = false;
+        SqlRowSet firstUserFriendship = jdbcTemplate.queryForRowSet(CHECK_LIKE, filmId, userId);
+        if (firstUserFriendship.next()) {
+            isExist = true;
+        }
+        return isExist;
+    }
+
+    @Override
+    public void addLikeToFilm(int filmId, int userId) {
+        if (!checkFilmLike(filmId, userId)) {
+            int createdRows = jdbcTemplate.update(ADD_LIKE, filmId, userId);
+            if (createdRows == 1) {
+                log.info(ADDED_LIKE, filmId, userId);
+            }
+        } else {
+            log.info(ADD_LIKE_ERROR, filmId, userId);
+            throw new ValidationException(ADD_LIKE_EX + filmId + ", " + userId);
+        }
+    }
+
+    @Override
+    public void deleteLikeToFilm(int filmId, int userId) {
+        if (checkFilmLike(filmId, userId)) {
+            int createdRows = jdbcTemplate.update(DELETE_LIKE, filmId, userId);
+            if (createdRows == 1) {
+                log.info(DELETED_LIKE, filmId, userId);
+            }
+        } else {
+            log.info(DELETE_LIKE_ERROR, filmId, userId);
+            throw new NotFoundException(DELETE_LIKE_EX + filmId + ", " + userId);
+        }
+    }
+
 
 }

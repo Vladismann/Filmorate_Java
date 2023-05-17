@@ -21,5 +21,9 @@ public class FilmQuery {
     }
     public static final String DELETE_OLD_GENRES = "DELETE FROM film_genres WHERE film_id = ?";
     public static final String UPDATE_FILM = "UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, rating_id = ? WHERE film_id = ?";
-
+    public static final String ADD_LIKE = "INSERT INTO film_likes " +
+            "(film_id, user_id) " +
+            "VALUES (?, ?)";
+    public static final String CHECK_LIKE = "SELECT * FROM film_likes WHERE film_id = ? AND user_id = ?";
+    public static final String DELETE_LIKE = "DELETE FROM film_likes WHERE film_id = ? AND user_id = ?";
 }
