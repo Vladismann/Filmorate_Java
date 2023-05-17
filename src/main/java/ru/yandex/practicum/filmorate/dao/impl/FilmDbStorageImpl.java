@@ -200,5 +200,29 @@ public class FilmDbStorageImpl implements FilmStorage {
         }
     }
 
+    @Override
+    public List<Film> getPopularFilms(int count) {
+        return jdbcTemplate.query(getPopularFilmsQuery(count), (rs, rowNum) -> {
+            int id = rs.getInt("film_id");
+            String filmName = rs.getString("name");
+            String filmDescription = rs.getString("description");
+            LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
+            int duration = rs.getInt("duration");
+            int rating_id = rs.getInt("rating_id");
+            String ratingName = rs.getString("rating_name");
+            int likes = rs.getInt("likes");
+            List<Genre> genres = getFilmGenres(id);
+            return Film.builder()
+                    .id(id)
+                    .name(filmName)
+                    .description(filmDescription)
+                    .releaseDate(releaseDate)
+                    .duration(duration)
+                    .mpa(new MPA(rating_id, ratingName))
+                    .genres(genres)
+                    .likesCount(likes)
+                    .build();
+        });
+    }
 
 }

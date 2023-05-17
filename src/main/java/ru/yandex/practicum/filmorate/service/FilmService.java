@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
@@ -31,10 +32,6 @@ public class FilmService {
             throw new ValidationException(film.getReleaseDate() + INCORRECT_FILM_DATE_EX);
         }
     }
-
-    /*private int compare(Film film1, Film film2) {
-        return Integer.compare(film2.getLikes().size(), film1.getLikes().size());
-    }*/
 
     public Film createFilm(Film film) {
         validateFilm(film);
@@ -67,13 +64,9 @@ public class FilmService {
         log.info(DELETED_LIKE, filmId, userId);
     }
 
-    /*public List<Film> getPopularFilms(int count) {
+    public List<Film> getPopularFilms(int count) {
         log.info(GET_POPULAR_FILMS, count);
-        return filmStorage.getAll()
-                .stream()
-                .sorted(this::compare)
-                .limit(count)
-                .collect(Collectors.toList());
-    }*/
+        return filmStorage.getPopularFilms(count);
+    }
 
 }

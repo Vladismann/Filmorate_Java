@@ -22,9 +22,10 @@ public class Film implements Resource {
     private LocalDate releaseDate;
     @Positive(message = "Значение не должно быть отрицательным")
     private int duration;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private MPA mpa;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Genre> genres;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer likesCount;
 
 }

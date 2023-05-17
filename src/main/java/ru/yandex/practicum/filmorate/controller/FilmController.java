@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 import static ru.yandex.practicum.filmorate.controller.Paths.*;
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
@@ -66,9 +67,11 @@ public class FilmController {
     }
 
 
-    /*@GetMapping(GET_POPULAR_FILMS_PATH)
+    @GetMapping(GET_POPULAR_FILMS_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);
-    }*/
+    }
+
+
 }

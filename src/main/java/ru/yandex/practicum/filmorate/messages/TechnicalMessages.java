@@ -12,6 +12,7 @@ public final class TechnicalMessages {
     public static final String RECEIVED_PUT = "Получен запрос PUT ";
     public static final String GETTING_RESOURCE = "Ресурс запрошен: {}";
     public static final String GET_MAX_ID_ERROR = "Ошибка при получении максимального id: ";
+
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";
 
@@ -22,12 +23,11 @@ public final class TechnicalMessages {
     public static final String GET_FILM_GENRES = "Запрос списка жанров фильма с id: {}";
     public static final String DELETE_FILM_GENRES = "Старые жанры фильма с id: {} удалены";
     public static final String DELETE_FILM_GENRES_EX = "Невозможно удалить жанры фильма с id: ";
-
-    public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Фильм: ";
-    public static final String FILM_UPDATE_ERROR = "Ошибка при обновлении фильма. Фильм: ";
     public static final String FILM_GENRE_ADD_ERROR_EX = "Ошибка при добавлении жанров фильму с id: ";
     public static final String FILM_ADDED_GENRE = "Фильму с id: {} добавлен жанр с id: {}";
 
+    public static final String FILM_CREATION_ERROR = "Ошибка при создании фильма. Фильм: ";
+    public static final String FILM_UPDATE_ERROR = "Ошибка при обновлении фильма. Фильм: ";
 
     public static final String INCORRECT_FILM_DATE = "Отправлен некорректная дата фильма: {}";
     public static final String INCORRECT_FILM_DATE_EX = " указанная дата раньше первого фильма в истории кино";
@@ -56,7 +56,6 @@ public final class TechnicalMessages {
     public static final String USER_UPDATE_ERROR = "Ошибка при обновлении пользователя. Пользователь: {}";
 
     public static final String RECEIVED_USERS = "Получено текущее количество пользователей: {}";
-    public static final String FRIEND_NOT_FOUND_EX = "Друг не найден: ";
 
     public static final String ADDED_FRIEND = "Пользователю с id: {} добавлен друг с id: {}";
     public static final String CANT_ADD_FRIEND = "Ошибка при добавлении пользователю с id: {} друга с id: {}. Уже был добавлен.";
