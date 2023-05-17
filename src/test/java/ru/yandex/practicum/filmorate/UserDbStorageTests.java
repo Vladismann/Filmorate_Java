@@ -82,6 +82,12 @@ class UserDbStorageTests {
     }
 
     @Test
+    public void getAllEmpty() {
+        List<User> allUsers = userStorage.getAllUsers();
+        assertEquals(0, allUsers.size());
+    }
+
+    @Test
     public void updateUser() {
         userStorage.createUser(testUser1);
         testUser2.setId(1);

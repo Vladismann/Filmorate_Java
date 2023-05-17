@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -25,12 +26,12 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
 public class FilmDbStorageImpl implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserDbStorageImpl userDbStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public FilmDbStorageImpl(JdbcTemplate jdbcTemplate, UserDbStorageImpl userDbStorage) {
+    public FilmDbStorageImpl(JdbcTemplate jdbcTemplate, UserStorage userStorage) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userDbStorage = userDbStorage;
+        this.userStorage = userStorage;
     }
 
     private int lastFilmId() {
@@ -168,7 +169,7 @@ public class FilmDbStorageImpl implements FilmStorage {
 
     private boolean checkFilmLike(int filmId, int userId) {
         getFilmById(filmId);
-        userDbStorage.getUserById(userId);
+        userStorage.getUserById(userId);
         boolean isExist = false;
         SqlRowSet firstUserFriendship = jdbcTemplate.queryForRowSet(CHECK_LIKE, filmId, userId);
         if (firstUserFriendship.next()) {
