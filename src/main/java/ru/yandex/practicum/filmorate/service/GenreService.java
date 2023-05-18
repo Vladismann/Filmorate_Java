@@ -14,7 +14,7 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.RECEIVED_
 @Slf4j
 public class GenreService {
 
-    GenreDbStorage genreDbStorage;
+    private final GenreDbStorage genreDbStorage;
 
     @Autowired
     public GenreService(GenreDbStorage genreDbStorage) {

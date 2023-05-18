@@ -3,15 +3,9 @@ package ru.yandex.practicum.filmorate.messages;
 public final class TechnicalMessages {
 
     //common
-    public static final String RESOURCE_NOT_FOUND = "Отправлен некорректный id ресурса: {}";
-    public static final String RESOURCE_NOT_FOUND_EX = "Ресурс не существует. Id: ";
-    public static final String ADDED_RESOURCE = "Ресурс добавлен: {}";
-    public static final String UPDATED_RESOURCE = "Ресурс обновлен: {}";
     public static final String RECEIVED_GET = "Получен запрос GET ";
     public static final String RECEIVED_POST = "Получен запрос POST ";
     public static final String RECEIVED_PUT = "Получен запрос PUT ";
-    public static final String GETTING_RESOURCE = "Ресурс запрошен: {}";
-    public static final String GET_MAX_ID_ERROR = "Ошибка при получении максимального id: ";
 
     //films
     public static final String FILM_CREATED = "Добавлен фильм: {}";

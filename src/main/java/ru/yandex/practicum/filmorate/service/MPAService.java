@@ -14,7 +14,7 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.GET_MPA;
 @Slf4j
 public class MPAService {
 
-    MPADbStorage mpaDbStorage;
+    private final MPADbStorage mpaDbStorage;
 
     @Autowired
     MPAService(MPADbStorage mpaDbStorage) {

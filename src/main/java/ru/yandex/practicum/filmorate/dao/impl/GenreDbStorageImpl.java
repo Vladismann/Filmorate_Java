@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.dao.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.GET_GENRE_BY_ID;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class GenreDbStorageImpl implements GenreDbStorage {
 
     private final JdbcTemplate jdbcTemplate;

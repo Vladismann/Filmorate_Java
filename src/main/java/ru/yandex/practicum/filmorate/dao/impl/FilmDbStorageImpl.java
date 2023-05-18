@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.dao.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -29,7 +28,7 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class FilmDbStorageImpl implements FilmDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
@@ -126,7 +125,6 @@ public class FilmDbStorageImpl implements FilmDbStorage {
 
     @Override
     public Film createFilm(Film film) {
-        //int createdRows = jdbcTemplate.update(CREATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int createdRows = jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(CREATE_FILM, new String[]{"FILM_ID"});

@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -16,7 +15,7 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class FilmService {
 
     public static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
