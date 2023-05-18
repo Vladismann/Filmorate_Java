@@ -166,22 +166,4 @@ public class FilmDbStorageTests {
         assertEquals(testFilm1, films.get(1));
     }
 
-    @Test
-    public void getGenreById() {
-        assertEquals(testGenre2, filmDbStorage.getGenreById(1));
-    }
-
-    @Test
-    public void getAllGenres() {
-        List<Genre> genres = filmDbStorage.getAllGenres();
-        assertEquals(6, genres.size());
-        assertTrue(genres.contains(testGenre1));
-        assertTrue(genres.contains(testGenre2));
-    }
-
-    @Test
-    public void cantGetDefunctGenreById() {
-        assertThrows(NotFoundException.class, () -> filmDbStorage.getGenreById(777));
-    }
-
 }

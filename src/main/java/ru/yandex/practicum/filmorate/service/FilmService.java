@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -64,15 +63,6 @@ public class FilmService {
     public List<Film> getPopularFilms(int count) {
         log.info(GET_POPULAR_FILMS, count);
         return filmStorage.getPopularFilms(count);
-    }
-
-    public Collection<Genre> getAllGenres() {
-        log.info(RECEIVED_GENRES, filmStorage.getAllGenres());
-        return filmStorage.getAllGenres();
-    }
-
-    public Genre getGenreById(int id) {
-        return filmStorage.getGenreById(id);
     }
 
 }

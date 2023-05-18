@@ -227,29 +227,4 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         });
     }
 
-    @Override
-    public List<Genre> getAllGenres() {
-        return jdbcTemplate.query(GET_ALL_GENRES_QUERY, (rs, rowNum) -> {
-            int id = rs.getInt("genre_id");
-            String genreName = rs.getString("genre_name");
-            return new Genre(id, genreName);
-        });
-    }
-
-    @Override
-    public Genre getGenreById(int id) {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_GENRE_BY_ID, id);
-        if (createdRows.next()) {
-            String genreName = createdRows.getString("genre_name");
-            Genre genre = new Genre(id, genreName);
-            log.info(GENRE_FOUND_ID, genre);
-            return genre;
-        } else {
-            log.info(GENRE_NOT_FOUND_ID, id);
-            throw new NotFoundException(GENRE_NOT_FOUND_ID_EX + id);
-        }
-    }
-
-
-
 }
