@@ -18,10 +18,10 @@ import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
@@ -53,7 +53,7 @@ public class FilmDbStorageTests {
                 .duration(60)
                 .releaseDate(TEST_DATE)
                 .mpa(testMPA1)
-                .genres(Set.of(testGenre1))
+                .genres(new LinkedHashSet<>(List.of(testGenre1)))
                 .build();
 
         testFilm2 = Film.builder()
@@ -62,7 +62,7 @@ public class FilmDbStorageTests {
                 .duration(120)
                 .releaseDate(TEST_DATE)
                 .mpa(testMPA2)
-                .genres(Set.of(testGenre2))
+                .genres(new LinkedHashSet<>(List.of(testGenre2)))
                 .build();
     }
 
