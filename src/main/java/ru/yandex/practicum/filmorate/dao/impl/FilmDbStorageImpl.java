@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.ActualGenres;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
@@ -69,6 +70,12 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         int duration = set.getInt("duration");
         int ratingId = set.getInt("rating_id");
         String ratingName = set.getString("rating_name");
+        LinkedHashSet<Genre> actualGenres = new LinkedHashSet<>();
+        String genreColumn = set.getString("genres");
+        if (genreColumn != null && !genreColumn.isBlank()) {
+            String[] genreIds = genreColumn.split(",");
+            Arrays.stream(genreIds).forEach(s -> actualGenres.add(new Genre(Integer.parseInt(s), ActualGenres.genres.get(Integer.parseInt(s)))));
+        }
         return Film.builder()
                 .id(id)
                 .name(filmName)
@@ -76,6 +83,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
                 .releaseDate(releaseDate)
                 .duration(duration)
                 .mpa(new MPA(ratingId, ratingName))
+                .genres(actualGenres)
                 .build();
     }
 
@@ -95,12 +103,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     }
 
     public List<Film> getAllFilms() {
-        return jdbcTemplate.query(GET_ALL_FILMS, (rs, rowNum) -> {
-            Film film = createFilmFromRowArgs(rs);
-            LinkedHashSet<Genre> genres = getFilmGenres(film.getId());
-            film.setGenres(genres);
-            return film;
-        });
+        return jdbcTemplate.query(GET_ALL_FILMS, (rs, rowNum) -> createFilmFromRowArgs(rs));
     }
 
     private void addFilmGenres(Set<Genre> genres, int filmId) {
@@ -216,12 +219,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
 
     @Override
     public List<Film> getPopularFilms(int count) {
-        return jdbcTemplate.query(getPopularFilmsQuery(count), (rs, rowNum) -> {
-            Film film = createFilmFromRowArgs(rs);
-            LinkedHashSet<Genre> genres = getFilmGenres(film.getId());
-            film.setGenres(genres);
-            return film;
-        });
+        return jdbcTemplate.query(getPopularFilmsQuery(count), (rs, rowNum) -> createFilmFromRowArgs(rs));
     }
 
 }
