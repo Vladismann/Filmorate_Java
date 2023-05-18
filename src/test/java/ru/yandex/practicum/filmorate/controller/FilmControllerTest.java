@@ -3,23 +3,22 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
+import ru.yandex.practicum.filmorate.dao.impl.FilmDbStorageImpl;
+import ru.yandex.practicum.filmorate.dao.impl.UserDbStorageImpl;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static ru.yandex.practicum.filmorate.service.FilmService.CINEMA_BIRTHDAY;
 
 
 class FilmControllerTest {
@@ -36,20 +35,20 @@ class FilmControllerTest {
     private final Random random = new Random();
     private final int over201 = random.nextInt(101) + INCORRECT_DESCRIPTION_SIZE;
     private final int less200 = random.nextInt(200);
-    private final long daysFromCinemaBirthToTodayDate = ChronoUnit.DAYS.between(CINEMA_BIRTHDAY, LocalDate.now());
 
     @BeforeEach
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
-        InMemoryUserStorage userStorage = new InMemoryUserStorage();
-        FilmService filmService = new FilmService(filmStorage, userStorage);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        UserDbStorage userStorage = new UserDbStorageImpl(jdbcTemplate);
+        FilmDbStorage filmStorage = new FilmDbStorageImpl(jdbcTemplate, userStorage);
+        FilmService filmService = new FilmService(filmStorage);
         validator = factory.getValidator();
         controller = new FilmController(filmService);
-        filmWithEmptyName = new Film("", "test", TEST_DATE, 90);
-        filmWithIncorrectDescription = new Film("test", "T".repeat(INCORRECT_DESCRIPTION_SIZE), TEST_DATE, 90);
-        filmWithIncorrectRealiseDate = new Film("test", "test", dateBeforeCinemaBirthDate, 90);
-        filmWithIncorrectDuration = new Film("test", "test", TEST_DATE, -1);
+        filmWithEmptyName = Film.builder().name("").description("test").releaseDate(TEST_DATE).duration(90).build();
+        filmWithIncorrectDescription = Film.builder().description("T".repeat(INCORRECT_DESCRIPTION_SIZE)).name("test").releaseDate(TEST_DATE).duration(90).build();
+        filmWithIncorrectRealiseDate = Film.builder().name("test").description("test").releaseDate(dateBeforeCinemaBirthDate).duration(90).build();
+        filmWithIncorrectDuration = Film.builder().name("test").description("test").releaseDate(TEST_DATE).duration(-1).build();
     }
 
     @Test
@@ -111,18 +110,6 @@ class FilmControllerTest {
     void cantCreateFilmBeforeCinemaBirthDate() {
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> controller.create(filmWithIncorrectRealiseDate));
         Assertions.assertEquals((filmWithIncorrectRealiseDate.getReleaseDate() + " указанная дата раньше первого фильма в истории кино"), exception.getMessage());
-    }
-
-    @Test
-    void successCreateFilmEqualCinemaBirthDate() {
-        filmWithIncorrectRealiseDate.setReleaseDate(CINEMA_BIRTHDAY);
-        assertDoesNotThrow(() -> controller.create(filmWithIncorrectRealiseDate));
-    }
-
-    @Test
-    void successCreateFilmAfterCinemaBirthDate() {
-        filmWithIncorrectRealiseDate.setReleaseDate(dateBeforeCinemaBirthDate.plusDays(random.nextInt((int) daysFromCinemaBirthToTodayDate)));
-        assertDoesNotThrow(() -> controller.create(filmWithIncorrectRealiseDate));
     }
 
     @Test

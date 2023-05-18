@@ -1,17 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-public class User implements Resource {
+@Builder
+public class User {
 
     private int id;
     @NotBlank(message = "Логин не должен быть пустым")
@@ -22,16 +21,5 @@ public class User implements Resource {
     private String email;
     @PastOrPresent(message = "Дата не должна быть в будущем")
     private LocalDate birthday;
-    @JsonIgnore
-    private final Set<Integer> friends = new HashSet<>();
 
-    public User() {
-    }
-
-    public User(String login, String name, String email, LocalDate birthday) {
-        this.login = login;
-        this.name = name;
-        this.email = email;
-        this.birthday = birthday;
-    }
 }

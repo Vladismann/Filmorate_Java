@@ -1,3 +1,4 @@
+
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,4 +71,5 @@ public class FilmController {
         log.info(RECEIVED_GET + GET_POPULAR_FILMS_PATH);
         return filmService.getPopularFilms(count);
     }
+
 }
