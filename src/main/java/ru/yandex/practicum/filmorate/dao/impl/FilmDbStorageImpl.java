@@ -3,23 +3,25 @@ package ru.yandex.practicum.filmorate.dao.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +31,10 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
 @Component
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class FilmDbStorageImpl implements FilmStorage {
+public class FilmDbStorageImpl implements FilmDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserStorage userStorage;
+    private final UserDbStorage userStorage;
 
     private Set<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
@@ -94,19 +96,19 @@ public class FilmDbStorageImpl implements FilmStorage {
     }
 
     private void addFilmGenres(Set<Genre> genres, int filmId) {
-        Set<Genre> uniqueGenres = new LinkedHashSet<>(genres);
-        for (Genre genre : uniqueGenres) {
-            try {
-                int genreId = genre.getId();
-                int createdRows = jdbcTemplate.update(ADD_FILM_GENRES, filmId, genreId);
-                if (createdRows == 0) {
-                    throw new RuntimeException(FILM_GENRE_ADD_ERROR_EX + filmId + System.lineSeparator() + genres);
-                } else {
-                    log.info(FILM_ADDED_GENRE, filmId, genreId);
-                }
-            } catch (RuntimeException exception) {
-                log.error(exception.getMessage());
+        List<Genre> listGenres = new ArrayList<>(genres);
+        int[] createdRows = jdbcTemplate.batchUpdate(ADD_FILM_GENRES, new BatchPreparedStatementSetter() {
+            public void setValues(PreparedStatement statement, int i) throws SQLException {
+                statement.setString(1, String.valueOf(filmId));
+                statement.setString(2, String.valueOf(listGenres.get(i).getId()));
+                log.info(FILM_ADDED_GENRE, filmId, listGenres.get(i).getId());
             }
+            public int getBatchSize() {
+                return listGenres.size();
+            }
+        });
+        if (createdRows.length == 0) {
+            throw new RuntimeException(FILM_GENRE_ADD_ERROR_EX + filmId + System.lineSeparator() + genres);
         }
     }
 
@@ -213,7 +215,6 @@ public class FilmDbStorageImpl implements FilmStorage {
             int duration = rs.getInt("duration");
             int ratingId = rs.getInt("rating_id");
             String ratingName = rs.getString("rating_name");
-            int likes = rs.getInt("likes");
             Set<Genre> genres = getFilmGenres(id);
             return Film.builder()
                     .id(id)

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class User implements Resource {
+public class User {
 
     private int id;
     @NotBlank(message = "Логин не должен быть пустым")

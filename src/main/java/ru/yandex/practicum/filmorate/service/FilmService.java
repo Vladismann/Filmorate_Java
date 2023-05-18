@@ -1,13 +1,14 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -17,15 +18,11 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmService {
 
     public static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
-    private final FilmStorage filmStorage;
-
-    @Autowired
-    public FilmService(FilmStorage filmStorage) {
-        this.filmStorage = filmStorage;
-    }
+    private final FilmDbStorage filmStorage;
 
     private void validateFilm(Film film) {
         if (film.getReleaseDate().isBefore(CINEMA_BIRTHDAY)) {

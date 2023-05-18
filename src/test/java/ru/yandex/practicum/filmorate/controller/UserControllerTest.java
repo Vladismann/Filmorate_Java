@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.dao.impl.UserDbStorageImpl;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -30,7 +30,7 @@ class UserControllerTest {
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        UserStorage userStorage = new UserDbStorageImpl(jdbcTemplate);
+        UserDbStorage userStorage = new UserDbStorageImpl(jdbcTemplate);
         UserService userService = new UserService(userStorage);
         validator = factory.getValidator();
         controller = new UserController(userService);

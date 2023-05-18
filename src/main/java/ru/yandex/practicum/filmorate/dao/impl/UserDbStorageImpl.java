@@ -8,10 +8,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -23,7 +23,7 @@ import static ru.yandex.practicum.filmorate.query.UsersQuery.*;
 @Component
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserDbStorageImpl implements UserStorage {
+public class UserDbStorageImpl implements UserDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
 

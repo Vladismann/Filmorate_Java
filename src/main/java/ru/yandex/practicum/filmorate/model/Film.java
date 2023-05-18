@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class Film implements Resource {
+public class Film {
 
     private int id;
     @NotBlank(message = "Имя не может быть пустым")

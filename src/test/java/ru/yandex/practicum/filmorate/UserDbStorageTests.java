@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.yandex.practicum.filmorate.dao.impl.UserDbStorageImpl;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserDbStorageTests {
 
-    private final UserDbStorageImpl userStorage;
+    private final UserDbStorage userStorage;
     private static final LocalDate TEST_DATE = LocalDate.of(2000, 8, 20);
     private User testUser1;
     private User testUser2;

@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.dao.impl.FilmDbStorageImpl;
 import ru.yandex.practicum.filmorate.dao.impl.UserDbStorageImpl;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -40,8 +40,8 @@ class FilmControllerTest {
     void before() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        UserStorage userStorage = new UserDbStorageImpl(jdbcTemplate);
-        FilmStorage filmStorage = new FilmDbStorageImpl(jdbcTemplate, userStorage);
+        UserDbStorage userStorage = new UserDbStorageImpl(jdbcTemplate);
+        FilmDbStorage filmStorage = new FilmDbStorageImpl(jdbcTemplate, userStorage);
         FilmService filmService = new FilmService(filmStorage);
         validator = factory.getValidator();
         controller = new FilmController(filmService);

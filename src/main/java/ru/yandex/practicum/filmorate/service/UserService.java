@@ -1,11 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,14 +15,10 @@ import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserService {
 
-    private final UserStorage userStorage;
-
-    @Autowired
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
+    private final UserDbStorage userStorage;
 
     private void validateUser(User user) {
         if (user.getLogin().contains(" ")) {

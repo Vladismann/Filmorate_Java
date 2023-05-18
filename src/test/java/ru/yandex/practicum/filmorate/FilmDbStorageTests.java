@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.dao.impl.FilmDbStorageImpl;
-import ru.yandex.practicum.filmorate.dao.impl.UserDbStorageImpl;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FilmDbStorageTests {
 
     private final FilmDbStorageImpl filmDbStorage;
-    private final UserDbStorageImpl userStorage;
+    private final UserDbStorage userStorage;
     private Film testFilm1;
     private Film testFilm2;
     private final User testUser1 = User.builder()
