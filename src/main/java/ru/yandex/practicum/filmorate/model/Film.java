@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,8 +24,6 @@ public class Film implements Resource {
     private int duration;
     private MPA mpa;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Genre> genres;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer likesCount;
+    private Set<Genre> genres;
 
 }

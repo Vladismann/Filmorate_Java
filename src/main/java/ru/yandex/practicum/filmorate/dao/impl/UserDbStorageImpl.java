@@ -1,7 +1,11 @@
 package ru.yandex.practicum.filmorate.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -9,6 +13,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,22 +22,10 @@ import static ru.yandex.practicum.filmorate.query.UsersQuery.*;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDbStorageImpl implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public UserDbStorageImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private int lastUserId() {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_USER_LAST_ID);
-        if (createdRows.next()) {
-            return createdRows.getInt("id");
-        } else {
-            throw new RuntimeException(GET_MAX_ID_ERROR);
-        }
-    }
 
     @Override
     public User getUserById(int id) {
@@ -48,7 +41,7 @@ public class UserDbStorageImpl implements UserStorage {
                     .name(userName)
                     .email(userEmail)
                     .birthday(userBirthDate).build();
-            log.info(USER_FOUND_ID, id, user);
+            log.info(USER_FOUND_ID, user);
             return user;
         } else {
             log.info(USER_NOT_FOUND_ID, id);
@@ -75,11 +68,17 @@ public class UserDbStorageImpl implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        int lastUserId = lastUserId();
-        int createdRows = jdbcTemplate.update(CREATE_USER, user.getLogin(), user.getName(), user.getEmail(), user.getBirthday());
-        int newUserId = lastUserId();
-        if (createdRows == 1 && newUserId > lastUserId) {
-            user.setId(newUserId);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int createdRows = jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(CREATE_USER, new String[]{"USER_ID"});
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getBirthday().toString());
+            return statement;
+        }, keyHolder);
+        if (createdRows == 1) {
+            user.setId(keyHolder.getKey().intValue());
             log.info(USER_CREATED, user);
             return user;
         } else {
@@ -160,11 +159,20 @@ public class UserDbStorageImpl implements UserStorage {
     public List<User> getCommonFriends(int userId, int friendId) {
         getUserById(userId);
         getUserById(friendId);
-        List<User> userFriends = getUserFriends(userId);
-        List<User> friendFriends = getUserFriends(friendId);
-        userFriends.retainAll(friendFriends);
         log.info(GET_COMMON_FRIENDS, userId, friendId);
-        return userFriends;
+        return jdbcTemplate.query(getCommonFriendsQuery(userId, friendId), (rs, rowNum) -> {
+            int id = rs.getInt("user_id");
+            String userLogin = rs.getString("login");
+            String userName = rs.getString("name");
+            String userEmail = rs.getString("email");
+            LocalDate userBirthDate = rs.getDate("birth_date").toLocalDate();
+            return User.builder()
+                    .id(id)
+                    .login(userLogin)
+                    .name(userName)
+                    .email(userEmail)
+                    .birthday(userBirthDate).build();
+        });
     }
 
 }

@@ -19,6 +19,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,7 +53,7 @@ public class FilmDbStorageTests {
                 .duration(60)
                 .releaseDate(TEST_DATE)
                 .mpa(testMPA1)
-                .genres(List.of(testGenre1))
+                .genres(Set.of(testGenre1))
                 .build();
 
         testFilm2 = Film.builder()
@@ -61,7 +62,7 @@ public class FilmDbStorageTests {
                 .duration(120)
                 .releaseDate(TEST_DATE)
                 .mpa(testMPA2)
-                .genres(List.of(testGenre2))
+                .genres(Set.of(testGenre2))
                 .build();
     }
 
@@ -121,7 +122,7 @@ public class FilmDbStorageTests {
         userStorage.createUser(testUser1);
         filmDbStorage.addLikeToFilm(1, 1);
         List<Film> films = filmDbStorage.getPopularFilms(2);
-        assertEquals(1, films.get(0).getLikesCount());
+        assertEquals(testFilm2, films.get(0));
     }
 
     @Test
@@ -141,7 +142,7 @@ public class FilmDbStorageTests {
         filmDbStorage.addLikeToFilm(1, 1);
         filmDbStorage.deleteLikeToFilm(1, 1);
         List<Film> films = filmDbStorage.getPopularFilms(2);
-        assertEquals(0, films.get(0).getLikesCount());
+        assertEquals(testFilm2, films.get(0));
     }
 
     @Test
@@ -161,8 +162,6 @@ public class FilmDbStorageTests {
         userStorage.createUser(testUser1);
         filmDbStorage.addLikeToFilm(2, 1);
         List<Film> films = filmDbStorage.getPopularFilms(2);
-        testFilm1.setLikesCount(0);
-        testFilm2.setLikesCount(1);
         assertEquals(testFilm2, films.get(0));
         assertEquals(testFilm1, films.get(1));
     }

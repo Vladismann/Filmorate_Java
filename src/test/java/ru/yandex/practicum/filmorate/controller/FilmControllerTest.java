@@ -35,7 +35,6 @@ class FilmControllerTest {
     private final Random random = new Random();
     private final int over201 = random.nextInt(101) + INCORRECT_DESCRIPTION_SIZE;
     private final int less200 = random.nextInt(200);
-    //private final long daysFromCinemaBirthToTodayDate = ChronoUnit.DAYS.between(CINEMA_BIRTHDAY, LocalDate.now());
 
     @BeforeEach
     void before() {

@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -13,7 +16,9 @@ import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,33 +28,19 @@ import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmDbStorageImpl implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserStorage userStorage;
 
-    @Autowired
-    public FilmDbStorageImpl(JdbcTemplate jdbcTemplate, UserStorage userStorage) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.userStorage = userStorage;
-    }
-
-    private int lastFilmId() {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_LAST_ID);
-        if (createdRows.next()) {
-            return createdRows.getInt("id");
-        } else {
-            throw new RuntimeException(GET_MAX_ID_ERROR);
-        }
-    }
-
-    private List<Genre> getFilmGenres(int filmId) {
+    private Set<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
-        return jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
+        return new HashSet<>(jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
             int id = rs.getInt("genre_id");
             String genreName = rs.getString("genre_name");
             return new Genre(id, genreName);
-        });
+        }));
     }
 
     @Override
@@ -62,7 +53,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             int duration = createdRows.getInt("duration");
             int ratingId = createdRows.getInt("rating_id");
             String ratingName = createdRows.getString("rating_name");
-            List<Genre> genres = getFilmGenres(id);
+            Set<Genre> genres = getFilmGenres(id);
             Film film = Film.builder()
                     .id(id)
                     .name(filmName)
@@ -89,7 +80,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             int duration = rs.getInt("duration");
             int ratingId = rs.getInt("rating_id");
             String ratingName = rs.getString("rating_name");
-            List<Genre> genres = getFilmGenres(id);
+            Set<Genre> genres = getFilmGenres(id);
             return Film.builder()
                     .id(id)
                     .name(filmName)
@@ -102,7 +93,7 @@ public class FilmDbStorageImpl implements FilmStorage {
         });
     }
 
-    private void addFilmGenres(List<Genre> genres, int filmId) {
+    private void addFilmGenres(Set<Genre> genres, int filmId) {
         Set<Genre> uniqueGenres = new LinkedHashSet<>(genres);
         for (Genre genre : uniqueGenres) {
             try {
@@ -119,17 +110,25 @@ public class FilmDbStorageImpl implements FilmStorage {
         }
     }
 
-    //@Override
+    @Override
     public Film createFilm(Film film) {
-        int lastFilmId = lastFilmId();
-        int createdRows = jdbcTemplate.update(
-                CREATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
-        int newFilmId = lastFilmId();
-        if (createdRows == 1 && newFilmId > lastFilmId) {
+        //int createdRows = jdbcTemplate.update(CREATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int createdRows = jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(CREATE_FILM, new String[]{"FILM_ID"});
+            statement.setString(1, film.getName());
+            statement.setString(2, film.getDescription());
+            statement.setString(3, film.getReleaseDate().toString());
+            statement.setString(4, String.valueOf(film.getDuration()));
+            statement.setString(5, String.valueOf(film.getMpa().getId()));
+            return statement;
+        }, keyHolder);
+        if (createdRows == 1) {
+            int filmId = keyHolder.getKey().intValue();
             if (film.getGenres() != null) {
-                addFilmGenres(film.getGenres(), newFilmId);
+                addFilmGenres(film.getGenres(), filmId);
             }
-            film.setId(newFilmId);
+            film.setId(filmId);
             log.info(FILM_CREATED, film);
             return film;
         } else {
@@ -138,7 +137,7 @@ public class FilmDbStorageImpl implements FilmStorage {
         }
     }
 
-    public void updateFilmGenres(int filmId, List<Genre> newGenres) {
+    public void updateFilmGenres(int filmId, Set<Genre> newGenres) {
         if (!getFilmGenres(filmId).isEmpty()) {
             int createdRowsOne = jdbcTemplate.update(DELETE_OLD_GENRES, filmId);
             if (createdRowsOne >= 1) {
@@ -215,7 +214,7 @@ public class FilmDbStorageImpl implements FilmStorage {
             int ratingId = rs.getInt("rating_id");
             String ratingName = rs.getString("rating_name");
             int likes = rs.getInt("likes");
-            List<Genre> genres = getFilmGenres(id);
+            Set<Genre> genres = getFilmGenres(id);
             return Film.builder()
                     .id(id)
                     .name(filmName)
@@ -224,7 +223,6 @@ public class FilmDbStorageImpl implements FilmStorage {
                     .duration(duration)
                     .mpa(new MPA(ratingId, ratingName))
                     .genres(genres)
-                    .likesCount(likes)
                     .build();
         });
     }

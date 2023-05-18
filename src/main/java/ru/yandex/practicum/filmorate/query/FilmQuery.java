@@ -8,7 +8,6 @@ public class FilmQuery {
     public static final String ADD_FILM_GENRES = "INSERT INTO film_genres " +
             "(film_id, genre_id) " +
             "VALUES (?, ?)";
-    public static final String GET_FILM_LAST_ID = "SELECT MAX(film_id) AS id FROM films";
     public static final String GET_FILM_BY_ID = "SELECT * FROM films f " +
             "INNER JOIN rating_mpa r ON f.rating_id = r.rating_id " +
             "WHERE f.film_id = ?";
