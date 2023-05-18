@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.dao;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.util.List;
 
@@ -24,9 +23,6 @@ public interface FilmDbStorage {
 
     List<Genre> getAllGenres();
 
-    List<MPA> getAllMPA();
-
     Genre getGenreById(int id);
 
-    MPA getMPAById(int id);
 }

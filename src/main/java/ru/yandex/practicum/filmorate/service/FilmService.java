@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -76,12 +75,4 @@ public class FilmService {
         return filmStorage.getGenreById(id);
     }
 
-    public Collection<MPA> getAllMpa() {
-        log.info(GET_MPA, filmStorage.getAllMPA());
-        return filmStorage.getAllMPA();
-    }
-
-    public MPA getMpaById(int id) {
-        return filmStorage.getMPAById(id);
-    }
 }

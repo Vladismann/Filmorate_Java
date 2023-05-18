@@ -40,10 +40,10 @@ public class FilmDbStorageTests {
             .birthday(TEST_DATE)
             .build();
     private static final LocalDate TEST_DATE = LocalDate.of(2000, 8, 20);
-    Genre testGenre1 = new Genre(2, "Драма");
-    Genre testGenre2 = new Genre(1, "Комедия");
-    MPA testMPA1 = new MPA(1, "G");
-    MPA testMPA2 = new MPA(2, "PG");
+    private final Genre testGenre1 = new Genre(2, "Драма");
+    private final Genre testGenre2 = new Genre(1, "Комедия");
+    private final MPA testMPA1 = new MPA(1, "G");
+    private final MPA testMPA2 = new MPA(2, "PG");
 
     @BeforeEach
     void before() {
@@ -182,24 +182,6 @@ public class FilmDbStorageTests {
     @Test
     public void cantGetDefunctGenreById() {
         assertThrows(NotFoundException.class, () -> filmDbStorage.getGenreById(777));
-    }
-
-    @Test
-    public void getMPAById() {
-        assertEquals(testMPA1, filmDbStorage.getMPAById(1));
-    }
-
-    @Test
-    public void cantGetDefunctMPAById() {
-        assertThrows(NotFoundException.class, () -> filmDbStorage.getMPAById(777));
-    }
-
-    @Test
-    public void getAllMpa() {
-        List<MPA> mpa = filmDbStorage.getAllMPA();
-        assertEquals(5, mpa.size());
-        assertTrue(mpa.contains(testMPA1));
-        assertTrue(mpa.contains(testMPA2));
     }
 
 }

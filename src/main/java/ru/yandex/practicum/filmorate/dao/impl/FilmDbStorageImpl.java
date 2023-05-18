@@ -18,6 +18,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,26 +46,49 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         }));
     }
 
+    private Film createFilmFromRowArgs(SqlRowSet set) {
+        int id = set.getInt("film_id");
+        String filmName = set.getString("name");
+        String filmDescription = set.getString("description");
+        LocalDate releaseDate = set.getDate("release_date").toLocalDate();
+        int duration = set.getInt("duration");
+        int ratingId = set.getInt("rating_id");
+        String ratingName = set.getString("rating_name");
+        return Film.builder()
+                .id(id)
+                .name(filmName)
+                .description(filmDescription)
+                .releaseDate(releaseDate)
+                .duration(duration)
+                .mpa(new MPA(ratingId, ratingName))
+                .build();
+    }
+
+    private Film createFilmFromRowArgs(ResultSet set) throws SQLException {
+        int id = set.getInt("film_id");
+        String filmName = set.getString("name");
+        String filmDescription = set.getString("description");
+        LocalDate releaseDate = set.getDate("release_date").toLocalDate();
+        int duration = set.getInt("duration");
+        int ratingId = set.getInt("rating_id");
+        String ratingName = set.getString("rating_name");
+        return Film.builder()
+                .id(id)
+                .name(filmName)
+                .description(filmDescription)
+                .releaseDate(releaseDate)
+                .duration(duration)
+                .mpa(new MPA(ratingId, ratingName))
+                .build();
+    }
+
     @Override
     public Film getFilmById(int id) {
         SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_ID, id);
         if (createdRows.next()) {
-            String filmName = createdRows.getString("name");
-            String filmDescription = createdRows.getString("description");
-            LocalDate releaseDate = createdRows.getDate("release_date").toLocalDate();
-            int duration = createdRows.getInt("duration");
-            int ratingId = createdRows.getInt("rating_id");
-            String ratingName = createdRows.getString("rating_name");
+            Film film = createFilmFromRowArgs(createdRows);
             Set<Genre> genres = getFilmGenres(id);
-            Film film = Film.builder()
-                    .id(id)
-                    .name(filmName)
-                    .description(filmDescription)
-                    .releaseDate(releaseDate)
-                    .duration(duration)
-                    .mpa(new MPA(ratingId, ratingName))
-                    .genres(genres)
-                    .build();
+            film.setGenres(genres);
             log.info(FILM_FOUND_ID, film);
             return film;
         } else {
@@ -75,23 +99,10 @@ public class FilmDbStorageImpl implements FilmDbStorage {
 
     public List<Film> getAllFilms() {
         return jdbcTemplate.query(GET_ALL_FILMS, (rs, rowNum) -> {
-            int id = rs.getInt("film_id");
-            String filmName = rs.getString("name");
-            String filmDescription = rs.getString("description");
-            LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
-            int duration = rs.getInt("duration");
-            int ratingId = rs.getInt("rating_id");
-            String ratingName = rs.getString("rating_name");
-            Set<Genre> genres = getFilmGenres(id);
-            return Film.builder()
-                    .id(id)
-                    .name(filmName)
-                    .description(filmDescription)
-                    .releaseDate(releaseDate)
-                    .duration(duration)
-                    .mpa(new MPA(ratingId, ratingName))
-                    .genres(genres)
-                    .build();
+            Film film = createFilmFromRowArgs(rs);
+            Set<Genre> genres = getFilmGenres(film.getId());
+            film.setGenres(genres);
+            return film;
         });
     }
 
@@ -103,6 +114,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
                 statement.setString(2, String.valueOf(listGenres.get(i).getId()));
                 log.info(FILM_ADDED_GENRE, filmId, listGenres.get(i).getId());
             }
+
             public int getBatchSize() {
                 return listGenres.size();
             }
@@ -148,7 +160,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
                 throw new RuntimeException(DELETE_FILM_GENRES_EX + filmId);
             }
         }
-        if (newGenres != null) {
+        if (newGenres != null && newGenres.size() > 0) {
             addFilmGenres(newGenres, filmId);
         }
     }
@@ -208,23 +220,10 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     @Override
     public List<Film> getPopularFilms(int count) {
         return jdbcTemplate.query(getPopularFilmsQuery(count), (rs, rowNum) -> {
-            int id = rs.getInt("film_id");
-            String filmName = rs.getString("name");
-            String filmDescription = rs.getString("description");
-            LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
-            int duration = rs.getInt("duration");
-            int ratingId = rs.getInt("rating_id");
-            String ratingName = rs.getString("rating_name");
-            Set<Genre> genres = getFilmGenres(id);
-            return Film.builder()
-                    .id(id)
-                    .name(filmName)
-                    .description(filmDescription)
-                    .releaseDate(releaseDate)
-                    .duration(duration)
-                    .mpa(new MPA(ratingId, ratingName))
-                    .genres(genres)
-                    .build();
+            Film film = createFilmFromRowArgs(rs);
+            Set<Genre> genres = getFilmGenres(film.getId());
+            film.setGenres(genres);
+            return film;
         });
     }
 
@@ -251,27 +250,6 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         }
     }
 
-    @Override
-    public List<MPA> getAllMPA() {
-        return jdbcTemplate.query(GET_ALL_MPA, (rs, rowNum) -> {
-            int id = rs.getInt("rating_id");
-            String genreName = rs.getString("rating_name");
-            return new MPA(id, genreName);
-        });
-    }
 
-    @Override
-    public MPA getMPAById(int id) {
-        SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_MPA_BY_ID, id);
-        if (createdRows.next()) {
-            String genreName = createdRows.getString("rating_name");
-            MPA mpa = new MPA(id, genreName);
-            log.info(MPA_FOUND_ID, mpa);
-            return mpa;
-        } else {
-            log.info(MPA_NOT_FOUND_ID, id);
-            throw new NotFoundException(MPA_NOT_FOUND_ID_EX + id);
-        }
-    }
 
 }
