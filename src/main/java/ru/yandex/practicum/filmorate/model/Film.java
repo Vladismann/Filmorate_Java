@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 @Data
 @Builder
@@ -24,6 +24,6 @@ public class Film {
     private int duration;
     private MPA mpa;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Genre> genres;
+    private LinkedHashSet<Genre> genres;
 
 }

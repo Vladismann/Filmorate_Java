@@ -21,10 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
@@ -37,9 +34,9 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     private final JdbcTemplate jdbcTemplate;
     private final UserDbStorage userStorage;
 
-    private Set<Genre> getFilmGenres(int filmId) {
+    private LinkedHashSet<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
-        return new HashSet<>(jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
+        return new LinkedHashSet<>(jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
             int id = rs.getInt("genre_id");
             String genreName = rs.getString("genre_name");
             return new Genre(id, genreName);
@@ -87,7 +84,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_FILM_BY_ID, id);
         if (createdRows.next()) {
             Film film = createFilmFromRowArgs(createdRows);
-            Set<Genre> genres = getFilmGenres(id);
+            LinkedHashSet<Genre> genres = getFilmGenres(id);
             film.setGenres(genres);
             log.info(FILM_FOUND_ID, film);
             return film;
@@ -100,7 +97,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     public List<Film> getAllFilms() {
         return jdbcTemplate.query(GET_ALL_FILMS, (rs, rowNum) -> {
             Film film = createFilmFromRowArgs(rs);
-            Set<Genre> genres = getFilmGenres(film.getId());
+            LinkedHashSet<Genre> genres = getFilmGenres(film.getId());
             film.setGenres(genres);
             return film;
         });
@@ -221,7 +218,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     public List<Film> getPopularFilms(int count) {
         return jdbcTemplate.query(getPopularFilmsQuery(count), (rs, rowNum) -> {
             Film film = createFilmFromRowArgs(rs);
-            Set<Genre> genres = getFilmGenres(film.getId());
+            LinkedHashSet<Genre> genres = getFilmGenres(film.getId());
             film.setGenres(genres);
             return film;
         });
