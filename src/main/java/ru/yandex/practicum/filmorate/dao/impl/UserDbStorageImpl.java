@@ -14,6 +14,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,20 +29,39 @@ public class UserDbStorageImpl implements UserDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private User createUserFromRowArgs(SqlRowSet set) {
+        int id = set.getInt("user_id");
+        String userLogin = set.getString("login");
+        String userName = set.getString("name");
+        String userEmail = set.getString("email");
+        LocalDate userBirthDate = set.getDate("birth_date").toLocalDate();
+        return User.builder()
+                .id(id)
+                .login(userLogin)
+                .name(userName)
+                .email(userEmail)
+                .birthday(userBirthDate).build();
+    }
+
+    private User createUserFromRowArgs(ResultSet set) throws SQLException {
+        int id = set.getInt("user_id");
+        String userLogin = set.getString("login");
+        String userName = set.getString("name");
+        String userEmail = set.getString("email");
+        LocalDate userBirthDate = set.getDate("birth_date").toLocalDate();
+        return User.builder()
+                .id(id)
+                .login(userLogin)
+                .name(userName)
+                .email(userEmail)
+                .birthday(userBirthDate).build();
+    }
+
     @Override
     public User getUserById(int id) {
         SqlRowSet userCreatedRows = jdbcTemplate.queryForRowSet(GET_USER_BY_ID, id);
         if (userCreatedRows.next()) {
-            String userLogin = userCreatedRows.getString("login");
-            String userName = userCreatedRows.getString("name");
-            String userEmail = userCreatedRows.getString("email");
-            LocalDate userBirthDate = userCreatedRows.getDate("birth_date").toLocalDate();
-            User user = User.builder()
-                    .id(id)
-                    .login(userLogin)
-                    .name(userName)
-                    .email(userEmail)
-                    .birthday(userBirthDate).build();
+            User user = createUserFromRowArgs(userCreatedRows);
             log.info(USER_FOUND_ID, user);
             return user;
         } else {
@@ -51,19 +72,7 @@ public class UserDbStorageImpl implements UserDbStorage {
 
     @Override
     public List<User> getAllUsers() {
-        return jdbcTemplate.query(GET_ALL_USERS, (rs, rowNum) -> {
-            int userId = rs.getInt("user_id");
-            String userLogin = rs.getString("login");
-            String userName = rs.getString("name");
-            String userEmail = rs.getString("email");
-            LocalDate userBirthDate = rs.getDate("birth_date").toLocalDate();
-            return User.builder()
-                    .id(userId)
-                    .login(userLogin)
-                    .name(userName)
-                    .email(userEmail)
-                    .birthday(userBirthDate).build();
-        });
+        return jdbcTemplate.query(GET_ALL_USERS, (rs, rowNum) -> createUserFromRowArgs(rs));
     }
 
     @Override
@@ -140,19 +149,7 @@ public class UserDbStorageImpl implements UserDbStorage {
     @Override
     public List<User> getUserFriends(int userId) {
         log.info(GET_USER_FRIENDS, userId);
-        return jdbcTemplate.query(getUserFriendsQuery(userId), (rs, rowNum) -> {
-            int id = rs.getInt("user_id");
-            String userLogin = rs.getString("login");
-            String userName = rs.getString("name");
-            String userEmail = rs.getString("email");
-            LocalDate userBirthDate = rs.getDate("birth_date").toLocalDate();
-            return User.builder()
-                    .id(id)
-                    .login(userLogin)
-                    .name(userName)
-                    .email(userEmail)
-                    .birthday(userBirthDate).build();
-        });
+        return jdbcTemplate.query(getUserFriendsQuery(userId), (rs, rowNum) -> createUserFromRowArgs(rs));
     }
 
     @Override
@@ -160,19 +157,7 @@ public class UserDbStorageImpl implements UserDbStorage {
         getUserById(userId);
         getUserById(friendId);
         log.info(GET_COMMON_FRIENDS, userId, friendId);
-        return jdbcTemplate.query(getCommonFriendsQuery(userId, friendId), (rs, rowNum) -> {
-            int id = rs.getInt("user_id");
-            String userLogin = rs.getString("login");
-            String userName = rs.getString("name");
-            String userEmail = rs.getString("email");
-            LocalDate userBirthDate = rs.getDate("birth_date").toLocalDate();
-            return User.builder()
-                    .id(id)
-                    .login(userLogin)
-                    .name(userName)
-                    .email(userEmail)
-                    .birthday(userBirthDate).build();
-        });
+        return jdbcTemplate.query(getCommonFriendsQuery(userId, friendId), (rs, rowNum) -> createUserFromRowArgs(rs));
     }
 
 }
