@@ -11,9 +11,11 @@ public class FilmQuery {
     public static final String GET_FILM_BY_ID = "SELECT * FROM films f " +
             "INNER JOIN rating_mpa r ON f.rating_id = r.rating_id " +
             "WHERE f.film_id = ?";
-    public static final String GET_ALL_FILMS = "SELECT f.*, r.*, GROUP_CONCAT(fg.GENRE_ID) AS genres  FROM films f " +
+    public static final String GET_ALL_FILMS = "SELECT f.*, r.*, GROUP_CONCAT(fg.GENRE_ID) AS genres, GROUP_CONCAT(g.GENRE_NAME) AS genre_names " +
+            "FROM films f " +
             "LEFT JOIN rating_mpa r ON f.rating_id = r.rating_id " +
             "LEFT JOIN FILM_GENRES fg ON f.FILM_ID = fg.FILM_ID " +
+            "LEFT JOIN GENRES g ON fg.GENRE_ID = g.GENRE_ID " +
             "GROUP BY f.FILM_ID";
 
     public static String getFilmGenresIdsQuery(int filmId) {
@@ -31,10 +33,11 @@ public class FilmQuery {
     public static final String DELETE_LIKE = "DELETE FROM film_likes WHERE film_id = ? AND user_id = ?";
 
     public static String getPopularFilmsQuery(int count) {
-        return "SELECT f.*, r.*, GROUP_CONCAT(fg.GENRE_ID) AS genres, COUNT(fl.film_id) AS likes " +
+        return "SELECT f.*, r.*, GROUP_CONCAT(fg.GENRE_ID) AS genres, COUNT(fl.film_id) AS likes, GROUP_CONCAT(g.GENRE_NAME) AS genre_names " +
                 "FROM films f " +
                 "LEFT JOIN rating_mpa r ON f.rating_id = r.rating_id " +
                 "LEFT JOIN FILM_GENRES fg ON f.FILM_ID = fg.FILM_ID " +
+                "LEFT JOIN GENRES g ON fg.GENRE_ID = g.GENRE_ID " +
                 "LEFT JOIN film_likes fl ON f.film_id = fl.film_id " +
                 "GROUP BY f.film_id " +
                 "ORDER BY likes DESC LIMIT " + count;

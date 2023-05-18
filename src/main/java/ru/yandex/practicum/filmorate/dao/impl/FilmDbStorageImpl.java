@@ -12,16 +12,19 @@ import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.ActualGenres;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.utils.GenreMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import static ru.yandex.practicum.filmorate.messages.TechnicalMessages.*;
 import static ru.yandex.practicum.filmorate.query.FilmQuery.*;
@@ -36,11 +39,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
 
     private LinkedHashSet<Genre> getFilmGenres(int filmId) {
         log.info(GET_FILM_GENRES, filmId);
-        return new LinkedHashSet<>(jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> {
-            int id = rs.getInt("genre_id");
-            String genreName = rs.getString("genre_name");
-            return new Genre(id, genreName);
-        }));
+        return new LinkedHashSet<>(jdbcTemplate.query(getFilmGenresIdsQuery(filmId), (rs, rowNum) -> GenreMapper.genreListMapper(rs)));
     }
 
     private Film createFilmFromRowArgs(SqlRowSet set) {
@@ -71,9 +70,13 @@ public class FilmDbStorageImpl implements FilmDbStorage {
         String ratingName = set.getString("rating_name");
         LinkedHashSet<Genre> actualGenres = new LinkedHashSet<>();
         String genreColumn = set.getString("genres");
-        if (genreColumn != null && !genreColumn.isBlank()) {
+        String genreNamesColumn = set.getString("genre_names");
+        if (genreColumn != null && !genreColumn.isBlank() && genreNamesColumn != null) {
             String[] genreIds = genreColumn.split(",");
-            Arrays.stream(genreIds).forEach(s -> actualGenres.add(new Genre(Integer.parseInt(s), ActualGenres.genres.get(Integer.parseInt(s)))));
+            String[] genreNames = genreNamesColumn.split(",");
+            for (int i = 0; i < genreNames.length; i++) {
+                actualGenres.add(new Genre(Integer.parseInt(genreIds[i]), genreNames[i]));
+            }
         }
         return Film.builder()
                 .id(id)

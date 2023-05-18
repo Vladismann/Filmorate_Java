@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.GenreDbStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.utils.GenreMapper;
 
 import java.util.List;
 
@@ -24,19 +25,14 @@ public class GenreDbStorageImpl implements GenreDbStorage {
 
     @Override
     public List<Genre> getAllGenres() {
-        return jdbcTemplate.query(GET_ALL_GENRES_QUERY, (rs, rowNum) -> {
-            int id = rs.getInt("genre_id");
-            String genreName = rs.getString("genre_name");
-            return new Genre(id, genreName);
-        });
+        return jdbcTemplate.query(GET_ALL_GENRES_QUERY, (rs, rowNum) -> GenreMapper.genreListMapper(rs));
     }
 
     @Override
     public Genre getGenreById(int id) {
         SqlRowSet createdRows = jdbcTemplate.queryForRowSet(GET_GENRE_BY_ID, id);
         if (createdRows.next()) {
-            String genreName = createdRows.getString("genre_name");
-            Genre genre = new Genre(id, genreName);
+            Genre genre = GenreMapper.genreListMapper(createdRows);
             log.info(GENRE_FOUND_ID, genre);
             return genre;
         } else {
